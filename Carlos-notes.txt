@@ -1,0 +1,6 @@
+Attached are the weir locations at Coweeta along with the subset of soil moisture stations. The soil moisture stations that are included are all from the same PI, using the Campbell CS650 at the same depths, one dataset for WS27 was added that is not part of Paul Bolstads set of stations because it fit the same criteria with the exception of being recorded on a CS615.
+
+The citation that I was looking for on the precipitation gradient can be found in the “Ecosystem processes at the watershed scale” paper by Hwang, Band and Hales. “The climate in the Coweeta Basin is classified as marine, humid temperate, and precipitation is relatively even in all seasons; annual precipitation ranges from 1870 to 2500mm with about a 5% increase with 100m [Swift et al., 1988]”.
+
+
+

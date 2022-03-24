@@ -1,0 +1,10 @@
+<PAMDataset>
+  <PAMRasterBand band="1">
+    <CategoryNames>
+      <Category></Category>
+      <Category>loamy</Category>
+      <Category>fine-loamy</Category>
+      <Category>coarse-loamy</Category>
+    </CategoryNames>
+  </PAMRasterBand>
+</PAMDataset>

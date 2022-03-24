@@ -1,0 +1,26 @@
+<PAMDataset>
+  <PAMRasterBand band="1">
+    <CategoryNames>
+      <Category></Category>
+      <Category>Burton</Category>
+      <Category>Cashiers</Category>
+      <Category>Chandler</Category>
+      <Category>Chestnut</Category>
+      <Category>Cleveland</Category>
+      <Category>Cullasaja</Category>
+      <Category>Dellwood</Category>
+      <Category>Edneyville</Category>
+      <Category>Evard</Category>
+      <Category>Fannin</Category>
+      <Category>Nikwasi</Category>
+      <Category>Plott</Category>
+      <Category>Reddies</Category>
+      <Category>Saunook</Category>
+      <Category>Whiteside</Category>
+      <Category>Trimont</Category>
+      <Category>Tuckasegee</Category>
+      <Category>Udorthents</Category>
+      <Category>Wayah</Category>
+    </CategoryNames>
+  </PAMRasterBand>
+</PAMDataset>
