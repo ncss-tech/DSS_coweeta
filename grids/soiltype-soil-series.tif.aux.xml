@@ -22,5 +22,11 @@
       <Category>Udorthents</Category>
       <Category>Wayah</Category>
     </CategoryNames>
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">19</MDI>
+      <MDI key="STATISTICS_MEAN">8.31859375</MDI>
+      <MDI key="STATISTICS_MINIMUM">1</MDI>
+      <MDI key="STATISTICS_STDDEV">3.4125677367893</MDI>
+    </Metadata>
   </PAMRasterBand>
 </PAMDataset>

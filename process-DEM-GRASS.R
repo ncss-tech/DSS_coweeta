@@ -12,30 +12,6 @@ library(rasterVis)
 library(viridisLite)
 library(RColorBrewer)
 
-## https://github.com/stevenpawley/Rsagacmd
-library(Rsagacmd)
-
-# initiate a saga object
-saga <- saga_gis()
-
-# DEM in projected coordinate system
-e <- raster('grids/elev_pcs.tif')
-
-dah <- saga$ta_morphometry$diurnal_anisotropic_heating(dem = e)
-
-# result is a list
-swi <- saga$ta_hydrology$saga_wetness_index(dem = e, .verbose = TRUE)
-
-
-## TODO:
-# TRI
-# VRI
-
-
-
-## export
-writeRaster(dah, filename = 'grids/DAH.tif', options = c('COMPRESS=LZW'))
-writeRaster(swi$twi, filename = 'grids/SWI.tif', options = c('COMPRESS=LZW'))
 
 
 ## GRASS, internal connection (start RStudio from GRASS shell)
@@ -171,6 +147,7 @@ execGRASS('g.list', parameters = list(type = 'rast'))
 # load raster / vector data into sp / raster objects
 b <- raster(readRAST('basins'))
 s <- readVECT('streams')
+fl <- readVECT('flowline', with_c = TRUE)
 d <- raster(readRAST('drain_dir'))
 a <- raster(readRAST('acc'))
 fa <- raster(readRAST('flowacc'))
@@ -192,12 +169,16 @@ d <- ratify(d)
 
 
 # load original watershed boundaries
-x <- read_sf('Coweeta and Hubbard Brook Shapefiles/Coweeta_Hydrologic_Laboratory.shp')
+x <- read_sf('vect/Coweeta_Hydrologic_Laboratory.shp')
 x <- as(x, 'Spatial')
 
 # watershed areas + stream network
 plot(b)
 plot(s, add = TRUE)
+
+plot(b)
+lines(fl)
+
 
 # original watershed boundaries
 plot(b)
@@ -292,8 +273,9 @@ gdalUtils::gdalinfo('grids/elev_pcs.tif')
 ## the same kind of modifications can be done in GRASS
 ## and are typically much more efficient
 writeRaster(d, file = 'grids/drain_dir.tif', options = 'COMPRESS=LZW', overwrite = TRUE)
+writeRaster(fa, file = 'grids/flowacc.tif', options = 'COMPRESS=LZW', overwrite = TRUE)
 
-
+write_sf(st_as_sf(fl), dsn = 'vect/flowlines.shp', overwrite = TRUE)
 
 
 

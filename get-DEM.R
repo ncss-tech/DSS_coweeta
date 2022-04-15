@@ -30,3 +30,14 @@ writeRaster(e, file = 'grids/elev.tif', overwrite = TRUE, options=c("COMPRESS=LZ
 
 # original PCS
 write_sf(x.buff, 'vect/coweeta_boundary_buff.shp', delete_layer = TRUE)
+
+
+
+
+
+
+
+
+
+
+
