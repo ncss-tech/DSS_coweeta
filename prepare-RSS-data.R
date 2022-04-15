@@ -4,6 +4,9 @@ library(sf)
 library(foreign)
 library(stringi)
 
+source('local-functions.R')
+
+
 ## TODO: which CRS are we using for most of the work... ?
 
 ## TODO: eventually convert to terra
@@ -49,55 +52,12 @@ rss.hz <- rss.hz[rss.hz$cokey %in% rss.co$cokey, ]
 
 
 
-.dominantCondition <- function(i, v) {
-  
-  i <- i[i$compkind != 'Miscellaneous area', ]
-  if(nrow(i) < 1) {
-    return(NULL)
-  }
-  
-  fm <- as.formula(sprintf("comppct_r ~ %s", v))
-  a <- aggregate(fm, data = i, FUN = sum, na.rm = TRUE)
-  
-  idx <- order(a[['comppct_r']], decreasing = TRUE)[1]
-  
-  res <- data.frame(
-    mukey = i$mukey[1],
-    v = a[[v]][idx]
-  )
-  names(res) <- c('mukey', v)
-  
-  return(res)
-}
-
-.dominantValue <- function(i, v) {
-  
-  i <- i[i$compkind != 'Miscellaneous area', ]
-  if(nrow(i) < 1) {
-    return(NULL)
-  }
-  
-  
-  idx <- order(i[['comppct_r']], decreasing = TRUE)[1]
-  
-  res <- data.frame(
-    mukey = i$mukey[1],
-    v = i[[v]][idx]
-  )
-  
-  names(res) <- c('mukey', v)
-  
-  return(res)
-  
-}
-
-
 
 getDominantCondition <- function(x, v) {
   
   res <- lapply(
     split(rss.co, rss.co$mukey), 
-    .dominantCondition, v = v
+    dominantCondition, v = v
   )
   
   res <- do.call('rbind', res)
@@ -111,7 +71,7 @@ getDominantValue <- function(x, v) {
   
   res <- lapply(
     split(rss.co.aws050, rss.co.aws050$mukey), 
-    .dominantValue, v = v
+    dominantValue, v = v
   )
   
   res <- do.call('rbind', res)
@@ -120,6 +80,9 @@ getDominantValue <- function(x, v) {
 }
 
 co.taxpartsize <- getDominantCondition(rss.co, v = 'taxpartsize')
+
+co.compnane <- getDominantCondition(rss.co, v = 'compname')
+co.cokey <- getDominantCondition(rss.co, v = 'cokey')
 
 
 co.spc <- rss.hz

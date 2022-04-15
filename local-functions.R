@@ -5,6 +5,55 @@
 
 
 
+dominantCondition <- function(i, v) {
+  
+  i <- i[which(i$compkind != 'Miscellaneous area'), ]
+  if(nrow(i) < 1) {
+    return(NULL)
+  }
+  
+  fm <- as.formula(sprintf("comppct_r ~ %s", v))
+  a <- aggregate(fm, data = i, FUN = sum, na.rm = TRUE)
+  
+  idx <- order(a[['comppct_r']], decreasing = TRUE)[1]
+  
+  res <- data.frame(
+    mukey = i$mukey[1],
+    v = a[[v]][idx],
+    pct = a[['comppct_r']][idx]
+  )
+  
+  names(res) <- c('mukey', v, 'pct')
+  
+  return(res)
+}
+
+dominantValue <- function(i, v) {
+  
+  i <- i[which(i$compkind != 'Miscellaneous area'), ]
+  if(nrow(i) < 1) {
+    return(NULL)
+  }
+  
+  
+  idx <- order(i[['comppct_r']], decreasing = TRUE)[1]
+  
+  res <- data.frame(
+    mukey = i$mukey[1],
+    v = i[[v]][idx],
+    pct = i[['comppct_r']][idx]
+  )
+  
+  names(res) <- c('mukey', v, 'pct')
+  
+  return(res)
+  
+}
+
+
+
+
+
 #' @title Build a soil parameter file from SSURGO component data.
 #'
 #' @param x 

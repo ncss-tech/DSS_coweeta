@@ -2,6 +2,9 @@
 ##
 ##
 
+# estimate GCS BBOX for project
+source('get-project-BBOX.R')
+
 
 # get 10m DEM
 source('get-DEM.R')
@@ -12,6 +15,9 @@ source('process-DEM-GRASS.R')
 
 # SAGA GIS: DEM derivatives
 source('process-DEM-SAGA.R')
+
+# prepare raster soil survey and derived grids
+source('prepare-RSS-data.R')
 
 
 

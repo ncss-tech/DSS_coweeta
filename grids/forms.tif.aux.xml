@@ -1,0 +1,33 @@
+<PAMDataset>
+  <PAMRasterBand band="1">
+    <Description>forms</Description>
+    <Histograms>
+      <HistItem>
+        <HistMin>1.555555555555556</HistMin>
+        <HistMax>10.44444444444444</HistMax>
+        <BucketCount>9</BucketCount>
+        <IncludeOutOfRange>0</IncludeOutOfRange>
+        <Approximate>0</Approximate>
+        <HistCounts>11618|63506|752|107214|157590|108730|956|94485|9359</HistCounts>
+      </HistItem>
+    </Histograms>
+    <Metadata>
+      <MDI key="COLOR_TABLE_RULES_COUNT">11</MDI>
+      <MDI key="COLOR_TABLE_RULE_RGB_0">1.000000e+00 1.000000e+00 220 220 220 220 220 220</MDI>
+      <MDI key="COLOR_TABLE_RULE_RGB_1">2.000000e+00 2.000000e+00 56 0 0 56 0 0</MDI>
+      <MDI key="COLOR_TABLE_RULE_RGB_10">1.100000e+01 1.100000e+01 255 0 255 255 0 255</MDI>
+      <MDI key="COLOR_TABLE_RULE_RGB_2">3.000000e+00 3.000000e+00 200 0 0 200 0 0</MDI>
+      <MDI key="COLOR_TABLE_RULE_RGB_3">4.000000e+00 4.000000e+00 255 80 20 255 80 20</MDI>
+      <MDI key="COLOR_TABLE_RULE_RGB_4">5.000000e+00 5.000000e+00 250 210 60 250 210 60</MDI>
+      <MDI key="COLOR_TABLE_RULE_RGB_5">6.000000e+00 6.000000e+00 255 255 60 255 255 60</MDI>
+      <MDI key="COLOR_TABLE_RULE_RGB_6">7.000000e+00 7.000000e+00 180 230 20 180 230 20</MDI>
+      <MDI key="COLOR_TABLE_RULE_RGB_7">8.000000e+00 8.000000e+00 60 250 150 60 250 150</MDI>
+      <MDI key="COLOR_TABLE_RULE_RGB_8">9.000000e+00 9.000000e+00 0 0 255 0 0 255</MDI>
+      <MDI key="COLOR_TABLE_RULE_RGB_9">1.000000e+01 1.000000e+01 0 0 56 0 0 56</MDI>
+      <MDI key="STATISTICS_MAXIMUM">10</MDI>
+      <MDI key="STATISTICS_MEAN">6.1548600710922</MDI>
+      <MDI key="STATISTICS_MINIMUM">2</MDI>
+      <MDI key="STATISTICS_STDDEV">1.8839483413603</MDI>
+    </Metadata>
+  </PAMRasterBand>
+</PAMDataset>

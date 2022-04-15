@@ -2,6 +2,9 @@
 
 ## idea: generate excess cLHS points, see which watershed has the most
 
+## TODO: use rassta package
+
+
 
 
 library(raster)
