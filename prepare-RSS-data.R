@@ -84,10 +84,24 @@ co.taxpartsize <- getDominantCondition(rss.co, v = 'taxpartsize')
 co.compnane <- getDominantCondition(rss.co, v = 'compname')
 co.cokey <- getDominantCondition(rss.co, v = 'cokey')
 
+## init SPC
 
 co.spc <- rss.hz
+
 depths(co.spc) <- cokey ~ hzdept_r + hzdepb_r
 hzdesgnname(co.spc) <- 'hzname'
+site(co.spc) <- rss.co
+
+sdc <- getSoilDepthClass(co.spc)
+site(co.spc) <- sdc
+
+par(mar = c(0, 0, 3, 0))
+plotSPC(co.spc[1:10, ], label = 'compname', color = 'claytotal_r')
+
+
+x <- subset(co.spc, cokey %in% co.cokey$cokey)
+plotSPC(x, label = 'compname', color = 'claytotal_r', name.style = 'center-center')
+
 
 # at dZ = 1cm, use awc_r directly
 co.spc$aws <- co.spc$awc_r * 1

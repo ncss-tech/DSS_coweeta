@@ -54,21 +54,93 @@ dominantValue <- function(i, v) {
 
 
 
-#' @title Build a soil parameter file from SSURGO component data.
+#' @title Build a soil parameter list from SSURGO/RSS component data.
 #'
-#' @param x 
+#' @param s a `SoilProfileCollection` object
 #' @param id 
 #' @param template 
 #'
-#' @return
+#' @return list
 #' @export
 #'
 #' @examples
-buildParameterFileSSURGO <- function(x, id, template = NULL) {
+buildParameterList <- function(s, template = NULL) {
+  
+  # create a bare-bones parameter list
+  if(is.null(template)) {
+    p <- list()
+  } else {
+    # start with the template
+    p <- template
+  }
+  
+  ##
+  ## Estimation of parameters via aggregation
+  ##
+  
+  ## TODO: decide on what to do with organic horizons, which could be missing data
+  # remove organic horizons
+  s <- subsetHz(s, ! grepl('O', hzDesgn(s)))
+  
+  
+  # soil depth
+  .soildepth <- estimateSoilDepth(s)
+  
+  # aggregate over entire soil depth, or specific depth interval
+  a <- suppressMessages(
+    slab(s, fm = ~ sandtotal_r + silttotal_r + claytotal_r, slab.structure = c(0, .soildepth), strict = FALSE, slab.fun = mean, na.rm = TRUE)
+  )
+  
+  # long -> wide
+  a.wide <- reshape2::dcast(a, top + bottom ~ variable, value.var = 'value')
+  
+  # extract SSC
+  .clay <- a.wide$claytotal_r
+  .sand <- a.wide$sandtotal_r
+  .silt <- a.wide$silttotal_r
+  
+  # truncate at 100%
+  if(.sand + .silt + .clay > 100) {
+    .silt <- 100 - (.sand + .clay)
+  }
+  
+  # Ksat of first mineral horizon
+  # um / s
+  .ksat <- s[, , .FIRST]$ksat_r
   
   
   
+  ## edit every possible component of the parameter file
+  ## using our best interpretation of the SSURGO/RSS component data
   
+  
+  ## soil depth
+  # convert cm -> m
+  p$soil_depth <- .soildepth * 0.01
+  
+  ## soil depth used by heat flux model
+  # set to soil depth
+  # convert cm -> m
+  p$deltaZ <- .soildepth * 0.01
+  
+  ## TODO: finish conversion factor
+  ## Saturated hydraulic conductivity at surface (meters / day)
+  # 1e-6 m / um
+  # 86400 s / d
+  #
+  # using first mineral horizon
+  # convert um/s -> m/d
+  p$Ksat_0 <- .ksat * 1
+  
+  
+  ## sand, silt, clay
+  # convert percent -> fraction
+  p$sand <- .sand * 0.01
+  p$silt <- .silt * 0.01
+  p$clay <- .clay * 0.01
+  
+  # done
+  return(p)
 }
 
 
@@ -98,6 +170,7 @@ writeSoilParameterFile <- function(p, f = '') {
  
   # names for iteration
   nm <- names(p)
+  
   # file length depends on the number of parameters
   textLines <- vector(mode = 'character', length = length(p)) 
   
