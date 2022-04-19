@@ -22,3 +22,8 @@ writeSoilParameterFile(p)
 # modify using SSURGO component
 buildParameterList(s, template = p)
 
+
+z <- 1:100 / 100
+k0 <- 2.4192
+
+plot(z, fitDecayFunction(z, k0, 100))

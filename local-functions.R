@@ -2,6 +2,18 @@
 ##
 ##
 
+## TODO: 
+#  * constant values?
+#  * not enough values to fit a curve? (dice?)
+#  * are exponential fits reasonable?
+
+fitDecayFunction <- function(z, p0, p) {
+  
+  res <- p0 * exp(-(z/p))
+  
+  return(res)
+  
+}
 
 
 
@@ -104,9 +116,21 @@ buildParameterList <- function(s, template = NULL) {
     .silt <- 100 - (.sand + .clay)
   }
   
+  ## convert Ksat units um/s --> m/d
+  #
+  # 1e-6 m / um
+  # 60*60*24 = 86400 s / d
+  #
+  # um/s * 1e-6 m/um / (1/86400 s/d) --> m/d
+  # um/s * 0.0864 ---------------------> m/d
+  s$ksat_r <- s$ksat_r * 0.0864
+  
   # Ksat of first mineral horizon
-  # um / s
-  .ksat <- s[, , .FIRST]$ksat_r
+  # m/d
+  .ksat0 <- s[, , .FIRST]$ksat_r
+  
+  ## Ksat decay parameter
+  # dice(s, ~ ksat_r, SPC = FALSE)
   
   
   
@@ -123,15 +147,12 @@ buildParameterList <- function(s, template = NULL) {
   # convert cm -> m
   p$deltaZ <- .soildepth * 0.01
   
-  ## TODO: finish conversion factor
   ## Saturated hydraulic conductivity at surface (meters / day)
-  # 1e-6 m / um
-  # 86400 s / d
-  #
   # using first mineral horizon
-  # convert um/s -> m/d
-  p$Ksat_0 <- .ksat * 1
+  p$Ksat_0 <- .ksat0
   
+  ## Ksat decay function parameter
+  p$m
   
   ## sand, silt, clay
   # convert percent -> fraction
