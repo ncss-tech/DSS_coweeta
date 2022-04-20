@@ -9,11 +9,11 @@ library(sf)
 library(sp)
 library(rgdal)
 
+# boundary via watersheds
+x <- read_sf('vect/Coweeta_Hydrologic_Laboratory.shp')
 
-## TODO: warp grids / transform vector data to local UTM crs
-
-# load BBOX
-x <- st_read('vect/bbox.shp')
+# reduce to single polygon
+x <- st_union(x)
 
 # get 30m gSSURGO mukey grid here
 mu <- mukey.wcs(aoi = x, db = 'gssurgo')
@@ -22,6 +22,13 @@ mu <- mukey.wcs(aoi = x, db = 'gssurgo')
 # get SSURGO polygons
 # WGS84
 mu.poly <- SDA_spatialQuery(x, what = 'mupolygon', geomIntersection = TRUE)
+
+# save a copy
+st_write(
+  st_transform(mu.poly, st_crs(x)),
+  dsn = 'vect/SSURGO-MU.shp', append = FALSE
+)
+
 
 
 # unique map unit keys
