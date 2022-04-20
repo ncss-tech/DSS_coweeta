@@ -13,4 +13,4 @@ bb <- st_transform(bb, 4326)
 # https://casoilresource.lawr.ucdavis.edu/gmap/?loc=35.04758,-83.45026
 
 
-st_write(bb, dsn = 'bbox.shp', overwrite = TRUE)
+st_write(bb, dsn = 'vect/bbox.shp', overwrite = TRUE)

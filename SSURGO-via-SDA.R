@@ -10,11 +10,19 @@ library(sp)
 library(rgdal)
 
 
-# load BBOX
-x <- st_read('bbox.shp')
+## TODO: warp grids / transform vector data to local UTM crs
 
-# get gSSURGO grid here
+# load BBOX
+x <- st_read('vect/bbox.shp')
+
+# get 30m gSSURGO mukey grid here
 mu <- mukey.wcs(aoi = x, db = 'gssurgo')
+
+
+# get SSURGO polygons
+# WGS84
+mu.poly <- SDA_spatialQuery(x, what = 'mupolygon', geomIntersection = TRUE)
+
 
 # unique map unit keys
 ll <- levels(mu)[[1]]

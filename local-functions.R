@@ -4,12 +4,13 @@
 
 ## TODO: 
 #  * constant values?
-#  * not enough values to fit a curve? (dice?)
+#  * not enough values to fit a curve? dice() -> nls() | optim() -> coef()
 #  * are exponential fits reasonable?
 
 fitDecayFunction <- function(z, p0, p) {
   
-  res <- p0 * exp(-(z/p))
+  # solve for p
+  # res <- p0 * exp(-(z/p))
   
   return(res)
   
