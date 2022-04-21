@@ -86,6 +86,9 @@ execGRASS('r.proj', flags = c('overwrite'), parameters = list(location = 'gcs', 
 execGRASS('g.list', parameters = list(type = 'rast'))
 
 
+## contours for EDA
+
+
 ## watershed modeling
 # https://grass.osgeo.org/grass79/manuals/r.watershed.html
 # threshold is in number of cells

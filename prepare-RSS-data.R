@@ -168,6 +168,7 @@ ll <- merge(ll.original, rat, by.x = 'ID', by.y = 'value', all.x = TRUE, sort = 
 levels(r) <- ll
 
 # convert select attributes to new raster objects via RAT + codes
+r.id <- deratify(r, att = 'ID')
 r.mukind <- deratify(r, att = 'mukind')
 r.coname <- deratify(r, att = 'co.names')
 r.taxpartsize <- deratify(r, att = 'taxpartsize')
@@ -176,6 +177,8 @@ r.mukey <- ratify(deratify(r, att = 'mukey'))
 
 
 ## export to single grid files
+writeRaster(r.id, filename = 'grids/rss_utm.tif', options = c('COMPRESS=LZW'), datatype = 'INT1U', overwrite = TRUE)
+
 writeRaster(r.mukind, filename = 'grids/rss_mukind.tif', options = c('COMPRESS=LZW'), datatype = 'INT1U', overwrite = TRUE)
 
 writeRaster(r.coname, filename = 'grids/rss_coname.tif', options = c('COMPRESS=LZW'), datatype = 'INT1U', overwrite = TRUE)
@@ -190,5 +193,7 @@ writeRaster(r.mukey, filename = 'grids/rss_mukey.tif', options = c('COMPRESS=LZW
 
 ## NOTE / BUG
 # re-loading these grids will add a 0 to the RAT
+
+
 
 

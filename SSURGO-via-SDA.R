@@ -20,6 +20,8 @@ mu <- mukey.wcs(aoi = x, db = 'gssurgo')
 
 
 # get SSURGO polygons
+# nearby: https://casoilresource.lawr.ucdavis.edu/gmap/?loc=35.02427,-83.47449,z16
+# NC113, 1:12k
 # WGS84
 mu.poly <- SDA_spatialQuery(x, what = 'mupolygon', geomIntersection = TRUE)
 
