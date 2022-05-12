@@ -1,0 +1,4 @@
+"value"	"predicted"
+NA	"X12"
+NA	"X2"
+NA	"X4"
