@@ -1,3 +1,24 @@
+
+##
+## CONVERT OVER TO NEW METHODS
+##
+
+## getting closer to a consistent interface to GRASS GIS on gov machine, but still very annoying
+
+# 0. create / use existing location / mapset, can contain nothing
+
+# 1. open Rstudio from within OSGeo4W-shell
+
+# 2. bootstrap location / mapset with DEM
+# r.in.gdal ...
+
+# 3. close rstudio or change location / mapset
+
+# 4. process accordingly
+
+
+
+
 library(sf)
 library(raster)
 

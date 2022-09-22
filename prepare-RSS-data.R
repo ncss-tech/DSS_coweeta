@@ -9,7 +9,7 @@ source('local-functions.R')
 
 ## TODO: which CRS are we using for most of the work... ?
 
-## TODO: eventually convert to terra
+## TODO: convert to terra
 
 # use the elevation model as target grid
 # note that it has a larger extent
@@ -56,7 +56,7 @@ rss.hz <- rss.hz[rss.hz$cokey %in% rss.co$cokey, ]
 getDominantCondition <- function(x, v) {
   
   res <- lapply(
-    split(rss.co, rss.co$mukey), 
+    split(x, x$mukey), 
     dominantCondition, v = v
   )
   
@@ -70,7 +70,7 @@ getDominantCondition <- function(x, v) {
 getDominantValue <- function(x, v) {
   
   res <- lapply(
-    split(rss.co.aws050, rss.co.aws050$mukey), 
+    split(x, x$mukey), 
     dominantValue, v = v
   )
   
@@ -174,6 +174,9 @@ r.coname <- deratify(r, att = 'co.names')
 r.taxpartsize <- deratify(r, att = 'taxpartsize')
 r.aws050 <- deratify(r, att = 'aws050')
 r.mukey <- ratify(deratify(r, att = 'mukey'))
+
+
+plot(r.aws050)
 
 
 ## export to single grid files
