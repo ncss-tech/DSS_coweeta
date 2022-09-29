@@ -59,7 +59,7 @@ a <- aggregate(x, fact = 10)
 # ~ 2 minutes full res
 system.time(
   sim <- newhall_batch(
-    x,
+    a,
     unitSystem = "metric",
     soilAirOffset = 2,
     amplitude = 0.66,
@@ -84,10 +84,10 @@ plot(sim[[3:4]], col = mako(25), axes = FALSE, legend = 'topright')
 
 plot(sim[[c(8,10)]], col = mako(25), axes = FALSE, legend = 'topright')
 
-# plot(sim[[18]], col = RColorBrewer::brewer.pal(6, 'Spectral'), axes = FALSE, legend = 'topright')
-# lines(w)
+plot(sim[[18]], col = RColorBrewer::brewer.pal(6, 'Spectral'), axes = FALSE, legend = 'topright')
+lines(w)
 
-plot(sim[[19]], col = RColorBrewer::brewer.pal(5, 'Spectral'))
+plot(sim[[19]], col = RColorBrewer::brewer.pal(5, 'Spectral'), axes = FALSE, legend = 'topright')
 lines(w)
 
 # plotting using named colors is super slow
