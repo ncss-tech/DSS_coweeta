@@ -82,9 +82,34 @@ runWB <- function(rs) {
   }
 }
 
+# ~ 4 minutes
 system.time(wb <- app(x, fun = runWB, cores = 8))
+
+# check: reasonable
 
 plot(wb, col = mako(25), axes = FALSE, mar = c(1, 1, 2, 5))
 
 plot(wb[[4]], col = mako(25), axes = FALSE, mar = c(1, 1, 2, 5))
+
+
+summary(aws)
+
+
+
+s <- spatSample(x, size = 1, na.rm = TRUE, as.df = TRUE)
+
+
+mwb <- monthlyWB(
+  AWC = unlist(s[, 26]),
+  PPT = unlist(s[, 1:12]), 
+  PET = unlist(s[, 13:24]), 
+  rep = 3, 
+  keep_last = TRUE
+)
+
+plotWB(mwb)
+
+
+
+
 

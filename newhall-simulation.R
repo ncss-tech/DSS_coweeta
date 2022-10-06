@@ -46,6 +46,9 @@ xy <- project(xy, from = crs(elev), to = 'EPSG:4326')
 x$lonDD <- xy[, 1]
 x$latDD <- xy[, 2]
 
+# mask to most constrained (tightly MASKED) layer: AWS
+x <- mask(x, aws)
+
 
 # check: OK
 names(x)
@@ -59,7 +62,7 @@ a <- aggregate(x, fact = 10)
 # ~ 2 minutes full res
 system.time(
   sim <- newhall_batch(
-    a,
+    x,
     unitSystem = "metric",
     soilAirOffset = 2,
     amplitude = 0.66,
