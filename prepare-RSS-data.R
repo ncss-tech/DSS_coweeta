@@ -11,6 +11,17 @@ source('local-functions.R')
 
 ## TODO: convert to terra
 
+## TODO: 
+## * convert to weighted mean for all operations
+## * classify soil depth for selection of soil parameter files
+## * make depth-varying soil parameter files
+## * generate fully-coded raster texture + depth class
+##
+##
+
+
+
+
 # use the elevation model as target grid
 # note that it has a larger extent
 e <- raster('grids/elev_pcs.tif')
@@ -51,6 +62,7 @@ rss.co <- rss.co[rss.co$mukey %in% rss.mu$mukey, ]
 rss.hz <- rss.hz[rss.hz$cokey %in% rss.co$cokey, ]
 
 
+## implement weighted mean
 
 
 getDominantCondition <- function(x, v) {
@@ -101,6 +113,10 @@ plotSPC(co.spc[1:10, ], label = 'compname', color = 'claytotal_r')
 
 x <- subset(co.spc, cokey %in% co.cokey$cokey)
 plotSPC(x, label = 'compname', color = 'claytotal_r', name.style = 'center-center')
+plotSPC(x, label = 'compname', color = 'sandtotal_r', name.style = 'center-center')
+
+# texture class
+
 
 
 # at dZ = 1cm, use awc_r directly
@@ -119,6 +135,8 @@ head(a)
 
 
 
+## soil depth class
+rss.co.depth <- merge(rss.co, site(co.spc)[, c('cokey', 'depth.class')], by = 'cokey', all.x = TRUE, sprt = FALSE)
 
 
 rss.co.aws050 <- merge(rss.co, a, by = 'cokey', sort = FALSE)[, c('mukey', 'cokey', 'compkind', 'comppct_r', 'value')]
@@ -126,9 +144,11 @@ rss.co.aws050 <- merge(rss.co, a, by = 'cokey', sort = FALSE)[, c('mukey', 'coke
 # no NA allowed in wt. mean / etc.
 rss.co.aws050 <- rss.co.aws050[!is.na(rss.co.aws050$value), ]
 
-co.aws050 <- getDominantValue(rss.co.aws050, v = 'value')
 
+co.aws050 <- getDominantValue(rss.co.aws050, v = 'value')
 names(co.aws050) <- c('mukey', 'aws050')
+
+co.depth <- getDominantValue(rss.co.depth, v = 'depth.class')
 
 
 
@@ -139,7 +159,9 @@ agg <- merge(mu.subset, co.taxpartsize, by = 'mukey', sort = FALSE)
 
 agg <- merge(agg, co.aws050, by = 'mukey', sort = FALSE)
 
-rat <- merge(rat, agg, by = 'musym', sort = FALSE)
+agg <- merge(agg, co.depth, by = 'mukey', sort = FALSE)
+
+rat <- merge(rat, agg, by = 'musym', all.x = TRUE, sort = FALSE)
 
 
 head(rat)
@@ -174,9 +196,15 @@ r.coname <- deratify(r, att = 'co.names')
 r.taxpartsize <- deratify(r, att = 'taxpartsize')
 r.aws050 <- deratify(r, att = 'aws050')
 r.mukey <- ratify(deratify(r, att = 'mukey'))
-
+r.depth.class <- ratify(deratify(r, att = 'depth.class'))
 
 plot(r.aws050)
+
+rasterVis::levelplot(r.taxpartsize)
+
+plot(r.depth.class)
+
+
 
 
 ## export to single grid files

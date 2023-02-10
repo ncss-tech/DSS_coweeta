@@ -1,95 +1,61 @@
 
 ##
-## CONVERT OVER TO NEW METHODS
-##
+## Instructions for a happy R--GRASS experience
+## 
 
-## getting closer to a consistent interface to GRASS GIS on gov machine, but still very annoying
+# 0. create a GRASS location/mapset in GRASS, do this by starting GRASS manually
+#    I typically setup dummy location/mapset in GCS WGS84
+# 
+#    E:\GRASS\gcs_wgs84\PERMANENT
 
-# 0. create / use existing location / mapset, can contain nothing
+# 1. open OSGeo4W-shell
 
-# 1. open Rstudio from within OSGeo4W-shell
+# 2. start GRASS GIS, find database / location / mapset
+#
+# adjust paths as needed
+# "c:\Program Files\QGIS 3.22.5\bin\grass78.bat" e:\GRASS\gcs_wgs84\PERMANENT
 
-# 2. bootstrap location / mapset with DEM
-# r.in.gdal ...
+# 3. start RStudio from GRASS console
+# "c:\Program Files\RStudio\bin\rstudio.exe"
 
-# 3. close rstudio or change location / mapset
+# 4. interact with GRASS in GRASS GUI / console or within R using rgrass6 package
 
-# 4. process accordingly
+## reset WD, as it will be in "program files..."
+setwd('e:/working_copies/DSS_coweeta/')
 
 
+# https://cran.r-project.org/web/packages/rgrass/vignettes/use.html
+library(rgrass)
 
+## import elevation into previously created GCS WGS84 location/mapset
+# https://grass.osgeo.org/grass79/manuals/r.in.gdal.html
+execGRASS('r.in.gdal', flags = c('overwrite'), parameters = list(input = 'grids/elev.tif', output = 'coweeta_elev'))
+
+
+## import expanded watershed boundary into new PCS location/mapset
+## CRS and extent are based on this vector layer
+# https://grass.osgeo.org/grass79/manuals/v.in.ogr.html
+execGRASS('v.in.ogr', flags = c('overwrite'), parameters = list(input = 'vect', layer = 'coweeta_boundary_buff', output = 'boundary', type = 'boundary', location = 'coweeta'))
+
+## exit, and restart into this new location/mapset
+
+# "c:\Program Files\QGIS 3.22.5\bin\grass78.bat" e:\GRASS\coweeta\PERMANENT
+
+# "c:\Program Files\RStudio\bin\rstudio.exe"
+
+## reset WD, as it will be in "program files..."
+setwd('e:/working_copies/DSS_coweeta/')
+
+library(rgrass)
 
 library(sf)
-library(raster)
-
-library(link2GI)
-library(rgrass7)
-
-# for now, force rgrass7 to use the sp-interface
-# library(sp)
-# use_sp()
+library(terra)
 
 library(rasterVis)
 library(viridisLite)
 library(RColorBrewer)
 
 
-
-## GRASS, internal connection (start RStudio from GRASS shell)
-# https://github.com/rsbivand/rgrass7
-
-
-## GRASS, external connection
-
-# ideas from: https://geocompr.robinlovelace.net/gis.html#rgrass
-
-# kind of slow
-gr <- findGRASS()
-
-# find a GRASS 7 installation, and use the first one
-ind <- grep("7", gr$version)[1]
-
-# next line of code only necessary if we want to use GRASS as installed by 
-# OSGeo4W. Among others, this adds some paths to PATH, which are also needed
-# for running GRASS.
-# link2GI::paramGRASSw(gr[ind, ])
-
-# grass_path <- ifelse(test = !is.null(gr$installation_type) &&
-#                        gr$installation_type[ind] == "osgeo4W",
-#                      yes = file.path(gr$instDir[ind], "apps/grass", gr$version[ind]),
-#                      no = gr$instDir)
-
-
-
-## temporary location for HOME and GRASS "database"
-td <- tempdir()
-
-# spurious error in print.gmeta() doesn't affect subsequent commands
-# https://github.com/rsbivand/rgrass7/issues/31
-
-# throw-away location/mapset used to bootstrap the process
-initGRASS(gisBase = grass_path,
-          home = td,
-          gisDbase = td, location = "garbage",
-          mapset = "PERMANENT", override = TRUE)
-
-
-## import elevation into a new GCS WGS84 location/mapset
-# https://grass.osgeo.org/grass79/manuals/r.in.gdal.html
-execGRASS('r.in.gdal', flags = c('overwrite'), parameters = list(input = 'grids/elev.tif', output = 'elev', location = 'gcs'))
-
-
-## import expanded watershed boundary into new PCS location/mapset
-# https://grass.osgeo.org/grass79/manuals/v.in.ogr.html
-execGRASS('v.in.ogr', flags = c('overwrite'), parameters = list(input = 'vect', layer = 'coweeta_boundary_buff', output = 'boundary', type = 'boundary', location = 'coweeta'))
-
-
-
-## switch to PCS location/mapset
-initGRASS(gisBase = grass_path,
-          home = td,
-          gisDbase = td, location = "coweeta",
-          mapset = "PERMANENT", override = TRUE)
 
 # check: boundary should be in there
 execGRASS('g.list', parameters = list(type = 'vect'))
@@ -101,7 +67,7 @@ execGRASS('g.region', flags = c('a', 'p'), parameters = list(vector = 'boundary'
 ## warp DEM to local PCS
 # https://grass.osgeo.org/grass79/manuals/r.proj.html
 # extent / resolution is set by the local location/mapset
-execGRASS('r.proj', flags = c('overwrite'), parameters = list(location = 'gcs', input = 'elev', output = 'elev', method = 'bicubic'))
+execGRASS('r.proj', flags = c('overwrite'), parameters = list(location = 'gcs_wgs84', input = 'coweeta_elev', output = 'elev', method = 'bicubic'))
 
 # check
 execGRASS('g.list', parameters = list(type = 'rast'))
@@ -169,68 +135,57 @@ execGRASS('g.list', parameters = list(type = 'rast'))
 ## check results in R, more convenient
 
 # load raster / vector data into sp / raster objects
-b <- raster(readRAST('basins'))
-s <- readVECT('streams')
-fl <- readVECT('flowline', with_c = TRUE)
-d <- raster(readRAST('drain_dir'))
-a <- raster(readRAST('acc'))
-fa <- raster(readRAST('flowacc'))
+# GRASS raster --> terra::spatRaster
+# GRASS vector --> terra::spatVector
+
+b <- read_RAST('basins')
+s <- read_VECT('streams')
+# note special syntax, consider adding CATS above
+fl <- read_VECT('flowline', flags = 'c')
+d <- read_RAST('drain_dir')
+a <- read_RAST('acc')
+fa <- read_RAST('flowacc')
 
 # remove 0-values
 fa[fa <= 0] <- NA
 
 
-# note that some values are 0
-table(d[])
-
-# remove those
-d[d < 0] <- NA
+# # note that some values are 0
+# table(values(d))
+# 
+# # remove those
+# d[d < 0] <- NA
 
 # convert to factor
-d <- ratify(d)
+.uvals <- unlist(unique(d))
+levels(d) <- data.frame(ID = .uvals, name  = .uvals)
 
 
 
 
 # load original watershed boundaries
-x <- read_sf('vect/Coweeta_Hydrologic_Laboratory.shp')
-x <- as(x, 'Spatial')
+x <- vect('vect/Coweeta_Hydrologic_Laboratory.shp')
 
 # watershed areas + stream network
 plot(b)
-plot(s, add = TRUE)
+lines(s)
 
 plot(b)
 lines(fl)
 
-
 # original watershed boundaries
 plot(b)
-plot(x, add = TRUE)
-
+lines(x)
 
 # flow direction + stream network
 plot(d)
-plot(s, add = TRUE)
-
-
+lines(s)
 
 # note: negative accumulation values -> unreliable flow from off-grid
 a.neg <- a < 0
-a.neg <- ratify(a.neg)
 
-levelplot(
-  a.neg, 
-  att = 'ID', 
-  scales = list(draw = FALSE), 
-  margin = FALSE, 
-  main = 'Negative Flow Accumulation (r.watershed)', 
-  col.regions = c('white', 'royalblue'),
-  panel = function(...) {
-    panel.levelplot(...)
-    sp.polygons(x, col = 'black', lwd = 1)
-  }
-)
+plot(a.neg, main = 'Negative Flow Accumulation (r.watershed)')
+lines(x)
 
 # plot log10-transformed values, negative values are discarded
 levelplot(
@@ -241,37 +196,38 @@ levelplot(
   main = 'Flow Accumulation (r.watershed)',
   panel = function(...) {
     panel.levelplot(...)
-    sp.polygons(x, col = 'white', lwd = 1)
+    sp::sp.polygons(as(x, 'Spatial'), col = 'white', lwd = 1)
   }
 ) 
+
 
 # plot flow direction
 levelplot(
   d, 
-  att = 'ID',
+  # att = 'ID',
   scales = list(draw = FALSE), 
   col.regions = brewer.pal(8, 'Spectral'),
   margin = FALSE, 
   main = 'Flow Direction (r.watershed)',
   panel = function(...) {
     panel.levelplot(...)
-    sp.polygons(x, col = 'black', lwd = 1)
+    sp::sp.polygons(as(x, 'Spatial'), col = 'black', lwd = 1)
   }
 ) 
 
 
-# # plot log10-transformed values, 0's have been set to NA
-# levelplot(
-#   fa, 
-#   scales = list(draw = FALSE), 
-#   margin = FALSE, 
-#   zscaleLog = 10,
-#   main = 'Flow Accumulation (r.watershed)',
-#   panel = function(...) {
-#     panel.levelplot(...)
-#     sp.polygons(x, col = 'white', lwd = 1)
-#   }
-# ) 
+# plot log10-transformed values, 0's have been set to NA
+levelplot(
+  fa,
+  scales = list(draw = FALSE),
+  margin = FALSE,
+  zscaleLog = 10,
+  main = 'Flow Accumulation (r.watershed)',
+  panel = function(...) {
+    panel.levelplot(...)
+    sp::sp.polygons(as(x, 'Spatial'), col = 'white', lwd = 1)
+  }
+)
 
 
 
@@ -290,33 +246,36 @@ execGRASS(
 )
 
 # check: looks right
-gdalUtils::gdalinfo('grids/elev_pcs.tif')
-
+gdal_utils(util = 'info', source = 'grids/elev_pcs.tif')
 
 ## export from R, in this case grids we have modified
 ## the same kind of modifications can be done in GRASS
 ## and are typically much more efficient
-writeRaster(d, file = 'grids/drain_dir.tif', options = 'COMPRESS=LZW', overwrite = TRUE)
-writeRaster(fa, file = 'grids/flowacc.tif', options = 'COMPRESS=LZW', overwrite = TRUE)
+writeRaster(d, file = 'grids/drain_dir.tif', overwrite = TRUE)
+writeRaster(fa, file = 'grids/flowacc.tif', overwrite = TRUE)
 
 write_sf(st_as_sf(fl), dsn = 'vect/flowlines.shp', overwrite = TRUE)
 
 
 
-# # double-check on data type: CELL --> signed integer, Int16
-# execGRASS('r.info', parameters = list(map = 'drain_dir'))
-# 
-# execGRASS(
-#   cmd = 'r.out.gdal', 
-#   flags = c('overwrite', 'c', 'm'), 
-#   parameters = list(
-#     input = 'drain_dir',
-#     output = 'grids/drain_dir.tif',
-#     format = 'GTiff',
-#     createopt = 'COMPRESS=LZW'
-#   )
-# )
-# 
-# # ok
-# gdalUtils::gdalinfo('grids/drain_dir.tif')
-# 
+# double-check on data type: CELL --> signed integer, Int16
+execGRASS('r.info', parameters = list(map = 'drain_dir'))
+
+execGRASS(
+  cmd = 'r.out.gdal',
+  flags = c('overwrite', 'c', 'm'),
+  parameters = list(
+    input = 'drain_dir',
+    output = 'grids/drain_dir.tif',
+    format = 'GTiff',
+    createopt = 'COMPRESS=LZW'
+  )
+)
+
+# ok
+gdal_utils(util = 'info', source = 'grids/drain_dir.tif')
+
+
+
+
+

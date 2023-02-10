@@ -1,13 +1,11 @@
 library(aqp)
 library(soilDB)
+library(terra)
+library(sf)
 library(raster)
 library(rasterVis)
 library(viridisLite)
-library(sf)
-
-# phasing these out eventually
-library(sp)
-library(rgdal)
+library(tactile)
 
 # boundary via watersheds
 x <- read_sf('vect/Coweeta_Hydrologic_Laboratory.shp')
@@ -25,21 +23,29 @@ mu <- mukey.wcs(aoi = x, db = 'gssurgo')
 # WGS84
 mu.poly <- SDA_spatialQuery(x, what = 'mupolygon', geomIntersection = TRUE)
 
+# check: OK
+plot(mu)
+# on-the-fly transform for EPSG 5070
+plot(st_geometry(st_transform(mu.poly, 5070)), add = TRUE)
+
+# transform SSURGO polygons to local CRS
+mu.poly <- st_transform(mu.poly, st_crs(x))
+
 # save a copy
 st_write(
-  st_transform(mu.poly, st_crs(x)),
-  dsn = 'vect/SSURGO-MU.shp', append = FALSE
+  mu.poly,
+  dsn = 'vect/SSURGO-MU.shp', append = FALSE, delete_layer = TRUE
 )
 
 
 
 # unique map unit keys
-ll <- levels(mu)[[1]]
+ll <- cats(mu)[[1]]
 
 # map unit keys
 levelplot(
   mu, 
-  att = 'ID', 
+  att = 'mukey', 
   margin = FALSE, 
   colorkey = FALSE, 
   col.regions = viridis, 
@@ -57,25 +63,31 @@ levelplot(
 # sand, silt, clay, AWC (RV)
 p <-  get_SDA_property(property = c("sandtotal_r","silttotal_r","claytotal_r", "awc_r"),
                        method = "WEIGHTED AVERAGE", 
-                       mukeys = ll$ID,
+                       mukeys = as.numeric(ll$mukey),
                        top_depth = 0,
-                       bottom_depth = 25)
+                       bottom_depth = 200, 
+                       include_minors = TRUE, 
+                       miscellaneous_areas = FALSE
+)
 
 head(p)
 
 # re-create raster attribute table with aggregate soil properties
-rat <- merge(ll, p, by.x = 'ID', by.y = 'mukey', sort = FALSE, all.x = TRUE)
+rat <- merge(ll, p, by.x = 'mukey', by.y = 'mukey', sort = FALSE, all.x = TRUE)
 
 # re-pack RAT
 levels(mu) <- rat
 
 # convert raster + RAT --> stack of values
-s <- deratify(mu, att = c("sandtotal_r", "silttotal_r", "claytotal_r", "awc_r"))
+s <- catalyze(mu)
+# keep values of interest
+s <- s[[c("sandtotal_r", "silttotal_r", "claytotal_r", "awc_r")]]
+
 
 # graphical check
 levelplot(
   s[[1:3]], 
-  main = 'Sand, Silt, Clay (RV) 0-25cm\nWeighted Average',
+  main = 'Sand, Silt, Clay (RV) 0-50cm\nWeighted Average',
   margin = FALSE, 
   scales = list(draw = FALSE), 
   col.regions = viridis
@@ -83,7 +95,7 @@ levelplot(
 
 levelplot(
   s[[4]], 
-  main = 'AWC (RV) 0-25cm\nWeighted Average',
+  main = 'AWC (RV) 0-50cm\nWeighted Average',
   margin = FALSE, 
   scales = list(draw = FALSE), 
   col.regions = viridis
@@ -98,12 +110,12 @@ txt.lut <- read.csv('http://soilmap2-1.lawr.ucdavis.edu/800m_grids/RAT/texture_2
 texture_025 <- s[[1]]
 
 # note: soil textures that aren't present are dropped from factor levels
-texture_025[] <- ssc_to_texcl(sand = s$sandtotal_r[], clay = s$claytotal_r[])
+values(texture_025) <- ssc_to_texcl(sand = values(s$sandtotal_r), clay = values(s$claytotal_r), simplify = TRUE)
 
 # extract RAT
-rat <- levels(texture_025)[[1]]
+rat <- cats(texture_025)[[1]]
 
-# add colors
+# add colors)
 rat <- merge(rat, txt.lut, by.x = 'VALUE', by.y = 'class', all.x = TRUE, sort = FALSE)
 
 # fix column order
