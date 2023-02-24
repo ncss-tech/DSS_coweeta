@@ -1,0 +1,35 @@
+<PAMDataset>
+  <PAMRasterBand band="1">
+    <CategoryNames>
+      <Category></Category>
+      <Category>Cleveland-Ashe</Category>
+      <Category>Craggey</Category>
+      <Category>Evard-Cowee</Category>
+      <Category>Burton-Wayah</Category>
+      <Category>Cullasaja-Tuckasegee</Category>
+      <Category>Saunook</Category>
+      <Category>Plott</Category>
+      <Category>Cashiers</Category>
+      <Category>Chandler</Category>
+      <Category>Edneyville-Chestnut</Category>
+      <Category>Tanasee</Category>
+      <Category>Trimont</Category>
+    </CategoryNames>
+    <Histograms>
+      <HistItem>
+        <HistMin>0.5416666666666667</HistMin>
+        <HistMax>12.45833333333333</HistMax>
+        <BucketCount>12</BucketCount>
+        <IncludeOutOfRange>0</IncludeOutOfRange>
+        <Approximate>0</Approximate>
+        <HistCounts>10223|7303|18339|6424|47613|25680|48322|1392|6892|29177|5152|12515</HistCounts>
+      </HistItem>
+    </Histograms>
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">12</MDI>
+      <MDI key="STATISTICS_MEAN">6.4270380583659</MDI>
+      <MDI key="STATISTICS_MINIMUM">1</MDI>
+      <MDI key="STATISTICS_STDDEV">2.8127862157272</MDI>
+    </Metadata>
+  </PAMRasterBand>
+</PAMDataset>

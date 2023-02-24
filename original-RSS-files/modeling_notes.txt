@@ -1,0 +1,409 @@
+Development of Sampling Scheme for Field Data Collection & Development of Premodel
+
+Premodel Development:
+Covariates Used
+	Aspect - Degrees
+	DEM - Meters
+	Geomorphons - Landform
+	Slope - Percent
+	Topographic Ruggedness Index
+
+Aspect					v1	w1	r1	v2	w2	r2
+Mesic Residuum - Wam Slope	Cyclic	157.50	45	2	292.50	45	2
+Mesic Residuum - Cool Slope	Cyclic	337.50	45	2	112.50	45	2
+														
+DEM							v1	r1	v2	r2
+Mesic Residuum - Ridge		Continuous:z-shape	1280	2	1280	2
+Mesic Residuum - Wam Slope	Continuous:z-shape	1280	2	1280	2
+Mesic Residuum - Cool Slope	Continuous:z-shape	1280	2	1280	2
+Mesic Alluvium			Continuous:z-shape	675	2	675	2
+Frigid Residuum - Ridge		Continuous:s-shape	1290	2	1290	2
+Frigid Residuum - Side Slope	Continuous:s-shape	1290	2	1290	2
+Frigid Colluvium		Continuous:s-shape	1290	2	1290	2
+Mesic Colluvium			Continuous:z-shape	1280	2	1280	2
+Mesic Residuum - Rugged		Continuous:z-shape	1280	2	1280	2
+Frigid Residuum - Rugged	Continuous:s-shape	1290	2	1290	2						
+							
+Landform				v1	v2	
+Mesic Residuum - Ridge		Nominal	2	3		
+Mesic Residuum - Wam Slope	Nominal	4	6		
+Mesic Residuum - Cool Slope	Nominal	4	6		
+Mesic Alluvium			Nominal	10	10		
+Frigid Residuum - Ridge		Nominal	2	3		
+Frigid Residuum - Side Slope	Nominal	4	6		
+Frigid Colluvium		Nominal	7	10		
+Mesic Colluvium			Nominal	7	10		
+						
+Slope - Percent						v1	w1	r1	v2	w2	r2
+Mesic Alluvium			Default			0	1	2	7	1	2
+Mesic Residuum - Rugged		Continuous:s-shape	55	5	2	55	1000000	2
+Frigid Residuum - Rugged	Continuous:s-shape	55	5	2	55	1000000	2
+													
+Topographic Ruggedness					v1	w1	r1	v2	w2	r2			
+Mesic Residuum - Rugged		Continuous:s-shape	6	1	2	6	1000000	2
+Frigid Residuum - Rugged	Continuous:s-shape	6	1	2	6	1000000	2
+
+Sampling Scheme for Field Data Collection:	
+Size of the project area – Covariate Distribution
+Optimum Sample Size - 135 points for 95% Variance
+cLHS Stratified by Management Zone Weighted by Area - ensures sample points within each management zone/research watershed
+
+Observation/Pedon Data Cleanup and Removal of Points Causing Confusion:
+
+Proposed Raster Classes:
+Taxoname	Class Label
+Ashe		1
+Cleveland	1
+Craggey		2
+Cowee		3
+Evard		3
+Wayah		4
+Burton		4
+Cullasaja	5
+Tuckasegee	5
+Saunook		6
+Plott		7
+Cashiers	8
+Chandler	9
+Edneyville	10
+Chestnut	10
+Tanasee		12
+Trimont		13
+
+Covariates Used for Training and Validation:
+aspect.tif - aspect in degrees, SAGA
+dem10m.tif - download 10m dem from geospatial datagateway, project individual scenes to 				USA_Contiguous_Albers_Equal_Area_Conic_USGS_version, mosaicked together individual scenes, Iterative focal mean smoothing - circular
+dwncrv.tif - downslope curvature, SAGA GIS - upslope and downslope curvature
+gencrv.tif - general curvature, SAGA
+longcrv.tif - longitudinal curvature, SAGA
+mca.tif - modified catchment area, SAGA GIS - SAGA Wetness Index
+mrrtf.tif - multi resolution ridge top flatness, SAGA
+mrvbf.tif - multi resolution valley bottom flatness, SAGA
+ndvi_c - normalized difference vegetation index, R - (combination of leaf off leaf on)
+ndvioff - normalized difference vegetation index leaf off, R
+ndvion - normalized difference vegetation index leaf on, R
+plancrv.tif - planform curvature, SAGA
+rockon - rock outcrop normalized difference ratio leaf on, R
+rockoff - rock outcrop normalized difference ratio leaf off, R
+sagawi.tif - saga wetness index, SAGA GIS - SAGA Wetness Index
+slopedeg.tif - slope in degrees, SAGA
+spi.tif - stream power index, SAGA GIS - Stream Power Index, inputs: slope in radians, catchment area from SAGA Wetness Index
+tpi.tif - topographic position index, SAGA GIS
+tri.tif - terrain ruggedness index, SAGA GIS
+twi.tif - topographic wetness index, SAGA GIS - catchment area: Flow Accumulation
+upcrv.tif - upslope curvature, SAGA GIS - upslope and downslope curvature 
+xseccrv.tif - cross-sectional curvature, SAGA
+
+- Review observations collected in the field (both visual observations with minimal data collected and physical observations with full pedon descriptions) to ensure points are located and classified by series correctly.  During field data collection, there were instances where the GPS's were not picking up enough satellites, thus causing some issues in locating clhs points. 
+
+Initial Pedons Before Cleanup:
+- 77 pedons with full descriptions
+- 145 visual observations - including rock outcrops
+
+- Develop a point layer that places a center point in each pixel within the project area  - "Pixel_Value_Boundary.shp"
+- Use "Extract Multi Values to Points" to extract values of all the covariates to the "Pixel_Value_Boundary.shp"
+- Develop point layer from observations/field data with full pedon descriptions - "Sampled_Points.shp"
+- Select points within the "Sampled_Points.shp" shapefile that represent a specific class.  
+- Utilize "Similarity Search" in ArcPro to ientify points within the "Pixel_Value_Boundary.shp" that are most similar to the selected points within "Sampled_Points.shp".  
+Input Features To Match - The layer (or a selection on a layer) containing the features you want to match; you are searching for other features that look like these features.
+Candidate Features - The layer (or a selection on a layer) containing candidate matching features. The tool will look for features most like (or most dislike) the Input Features To Match among these candidates. 
+Most or Least Similar - MOST_SIMILAR—Find the features that are most alike. 
+Match Method - ATTRIBUTE_PROFILES—Similarity or dissimilarity will be computed as a function of cosine similarity for all the Attributes Of Interest. 
+Number Of Results - 30
+Attributes Of Interest - A list of numeric attributes representing the matching criteria - all covariates used for training/validation of model. 
+
+- Compare the output layer of most similar points with 90% or greater similarity to the visual observation points that do not have full descriptions.  Visual observation points that ar within a 10m distance to the similarity points (90% or greater) are kept and utilized for modeling.  All other points are removed and considered to be unreliable and could potentially casue confusion when training the model using machine learning. 
+
+Final Observations:
+"Model_Points_All.shp"
+- 73 points with full pedon descriptions
+- 134 points from visual observations
+
+Frigid_Points.shp
+- Only points from "Model_Points_All.shp" that fall into the frigid temperature regime.
+
+Mesic_Points.shp
+- Only points from "Model_Points_All.shp" that will within the mesisc temperature regime. 
+
+Using Data Splitting for Validation using a Split Method:
+### separate observations into training and test files based on "class"
+### splits points from "Model_Points_All.shp" into 75% training, 25% validation
+
+inTrain = createDataPartition(x$Class, p = 3/4, list = FALSE)
+dfTrain=x[inTrain,]
+dfTest=x[-inTrain,]
+str(dfTrain)
+write.csv(dfTrain, "train_clean.csv") - will not be used
+write.csv(dfTest, "test_clean.csv") - will be used for validation at the end
+
+Frigid/Mesic Covariate Masking:
+- Mask out of all covariates the "Udorthent" portion of the project area to minimize confusion. 
+- Extract all covariates based on the mesic and frigid temperature regime break - 1280 meters and greater is considered the frigid temperature regime. 
+
+MESIC PORTION - Random Forest Model:
+
+Random Forest with Control Fit
+c1 <- makeCluster(detectCores()-1)
+registerDoParallel(c1)
+set.seed(48)
+rfFit = train(Class ~ ., data = comp.sub,
+              "rf", 
+              trControl = fitControl, 
+              ntree = 500, #number of trees default is 500, which seems to work best anyway. 
+              tuneLength=10, 
+              metric = 'Kappa', 
+              na.action=na.pass,
+              keep.forest=TRUE, # added this line and the next for partial dependance plots
+              importance=TRUE)
+stopCluster(c1)
+
+rfFit$finalModel
+
+Call:
+ randomForest(x = x, y = y, ntree = 500, mtry = param$mtry, importance = TRUE,      keep.forest = TRUE) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 20
+
+        OOB estimate of  error rate: 20.47%
+Confusion matrix:
+    X1 X10 X13 X3 X5 X6 X7 X8 X9 class.error
+X1  14   1   1  0  0  1  0  0  0  0.17647059
+X10  0  26   0  0  0  0  2  2  0  0.13333333
+X13  0   1   8  0  1  1  1  0  1  0.38461538
+X3   0   1   0 17  0  0  1  0  2  0.19047619
+X5   0   0   0  0 20  0  3  1  0  0.16666667
+X6   0   0   1  0  2 14  1  0  0  0.22222222
+X7   0   3   2  0  2  1 13  0  0  0.38095238
+X8   1   0   0  0  0  0  1 10  0  0.16666667
+X9   0   1   0  0  0  0  0  0 14  0.06666667
+
+
+print(rfFit)
+Random Forest 
+
+171 samples
+ 22 predictor
+  9 classes: 'X1', 'X10', 'X13', 'X3', 'X5', 'X6', 'X7', 'X8', 'X9' 
+
+No pre-processing
+Resampling: Cross-Validated (15 fold, repeated 5 times) 
+Summary of sample sizes: 160, 159, 161, 160, 159, 160, ... 
+Resampling results across tuning parameters:
+
+  mtry  Accuracy   Kappa    
+   5    0.7991261  0.7697260
+   9    0.7973753  0.7676431
+  10    0.7963497  0.7664363
+  12    0.7950319  0.7648970
+  13    0.8010945  0.7717795
+  15    0.7993533  0.7698105
+  19    0.7988749  0.7693216
+  20    0.8022056  0.7730326
+  21    0.8006030  0.7713184
+
+Kappa was used to select the optimal model using the largest value.
+The final value used for the model was mtry = 20.
+
+rfFit$results
+  mtry  Accuracy     Kappa AccuracySD   KappaSD
+1    5 0.7991261 0.7697260  0.1258816 0.1442038
+2    9 0.7973753 0.7676431  0.1220254 0.1399919
+3   10 0.7963497 0.7664363  0.1230364 0.1413908
+4   12 0.7950319 0.7648970  0.1215548 0.1396387
+5   13 0.8010945 0.7717795  0.1221363 0.1402062
+6   15 0.7993533 0.7698105  0.1217544 0.1397956
+7   19 0.7988749 0.7693216  0.1222056 0.1404031
+8   20 0.8022056 0.7730326  0.1211257 0.1390531
+9   21 0.8006030 0.7713184  0.1210125 0.1388632
+
+FRIGID PORTION - Random Forest Model:
+
+c1 <- makeCluster(detectCores()-1)
+registerDoParallel(c1)
+set.seed(48)
+rfFit = train(Class ~ ., data = comp.sub,
++               "rf", 
++               trControl = fitControl, 
++               ntree = 500, #number of trees default is 500, which seems to work best anyway. 
++               tuneLength=10, 
++               metric = 'Kappa', 
++               na.action=na.pass,
++               keep.forest=TRUE, # added this line and the next for partial dependance plots
++               importance=TRUE)
+> stopCluster(c1)
+
+rfFit$finalModel
+
+Call:
+ randomForest(x = x, y = y, ntree = 500, mtry = param$mtry, importance = TRUE,      keep.forest = TRUE) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 10
+
+        OOB estimate of  error rate: 5.56%
+Confusion matrix:
+    X12 X2 X4 class.error
+X12  11  1  0  0.08333333
+X2    0 13  0  0.00000000
+X4    0  1 10  0.09090909
+
+print(rfFit)
+Random Forest 
+
+36 samples
+22 predictors
+ 3 classes: 'X12', 'X2', 'X4' 
+
+No pre-processing
+Resampling: Cross-Validated (15 fold, repeated 5 times) 
+Summary of sample sizes: 34, 33, 34, 33, 33, 33, ... 
+Resampling results across tuning parameters:
+
+  mtry  Accuracy   Kappa    
+   5    0.9346847  0.8888889
+   9    0.9481982  0.9116162
+  10    0.9527027  0.9191919
+  12    0.9527027  0.9191919
+  13    0.9481982  0.9116162
+  15    0.9481982  0.9116162
+  19    0.9481982  0.9116162
+  20    0.9481982  0.9116162
+  21    0.9481982  0.9116162
+
+Kappa was used to select the optimal model using the largest value.
+The final value used for the model was mtry = 10.
+
+rfFit$results
+  mtry  Accuracy     Kappa AccuracySD   KappaSD
+1    5 0.9346847 0.8888889  0.1454996 0.2344904
+2    9 0.9481982 0.9116162  0.1349380 0.2192054
+3   10 0.9527027 0.9191919  0.1309149 0.2133222
+4   12 0.9527027 0.9191919  0.1309149 0.2133222
+5   13 0.9481982 0.9116162  0.1349380 0.2192054
+6   15 0.9481982 0.9116162  0.1349380 0.2192054
+7   19 0.9481982 0.9116162  0.1349380 0.2192054
+8   20 0.9481982 0.9116162  0.1349380 0.2192054
+9   21 0.9481982 0.9116162  0.1349380 0.2192054
+
+taxn.rf
+
+Call:
+ randomForest(formula = Class ~ ., data = all.df, ntree = 500,      importance = TRUE, proximity = TRUE, keep.forest = TRUE) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 4
+
+        OOB estimate of  error rate: 7.14%
+Confusion matrix:
+    X12 X2 X4 class.error
+X12   8  1  0   0.1111111
+X2    0 10  0   0.0000000
+X4    1  0  8   0.1111111
+
+
+Combine Final Results of Trained Models:
+- Combine results of the predicted models from the mesic and frigid temperature regime into one complete prediction.
+- Done in ArcPro - maintain classes (1,2,3,4 and etc.)
+
+Combined Prediction Cleanup:
+- Utilize ArcSIE to remove slivers within the combined prediction. 
+Threshold for Interior Slivers - 6000
+Threshold for Border Slivers - 6000
+Threshold to Start Within - 100
+Increment - 100
+8 - connected
+Output File Name -  "final_model_clean"
+
+Cross Validation Using Split Method:
+- Run validation on final_model_clean after slivers have been removed.
+- Validation points are from "test_clean.csv" with exctracted class values from "final_model_clean".
+
+Confusion Matrix and Statistics
+
+          Reference
+Prediction 1 2 3 4 5 6 7 8 9 10 12 13
+        1  4 0 0 0 0 0 0 0 0  0  0  0
+        2  0 3 0 0 0 0 0 0 0  0  0  0
+        3  0 0 5 0 0 0 0 0 0  0  0  0
+        4  0 0 0 2 0 0 0 0 0  0  0  0
+        5  0 0 0 0 6 0 0 0 0  0  0  0
+        6  0 0 0 0 0 4 0 0 0  0  0  0
+        7  0 0 0 0 1 1 3 0 0  0  0  0
+        8  0 0 0 0 0 0 0 2 0  1  0  0
+        9  0 0 0 0 0 0 0 0 3  0  0  0
+        10 0 0 0 0 1 0 0 0 0  6  0  0
+        12 0 0 0 0 0 0 0 0 0  0  3  0
+        13 0 0 0 0 0 1 0 0 0  0  0  2
+
+Overall Statistics
+                                          
+               Accuracy : 0.8958          
+                 95% CI : (0.7734, 0.9653)
+    No Information Rate : 0.1667          
+    P-Value [Acc > NIR] : < 2.2e-16       
+                                          
+                  Kappa : 0.8848          
+                                          
+ Mcnemar's Test P-Value : NA              
+
+Statistics by Class:
+
+                     Class: 1 Class: 2 Class: 3 Class: 4 Class: 5 Class: 6 Class: 7 Class: 8 Class: 9 Class: 10 Class: 12 Class: 13
+Sensitivity           1.00000   1.0000   1.0000  1.00000   0.7500  0.66667   1.0000  1.00000   1.0000    0.8571    1.0000   1.00000
+Specificity           1.00000   1.0000   1.0000  1.00000   1.0000  1.00000   0.9556  0.97826   1.0000    0.9756    1.0000   0.97826
+Pos Pred Value        1.00000   1.0000   1.0000  1.00000   1.0000  1.00000   0.6000  0.66667   1.0000    0.8571    1.0000   0.66667
+Neg Pred Value        1.00000   1.0000   1.0000  1.00000   0.9524  0.95455   1.0000  1.00000   1.0000    0.9756    1.0000   1.00000
+Precision             1.00000   1.0000   1.0000  1.00000   1.0000  1.00000   0.6000  0.66667   1.0000    0.8571    1.0000   0.66667
+Recall                1.00000   1.0000   1.0000  1.00000   0.7500  0.66667   1.0000  1.00000   1.0000    0.8571    1.0000   1.00000
+F1                    1.00000   1.0000   1.0000  1.00000   0.8571  0.80000   0.7500  0.80000   1.0000    0.8571    1.0000   0.80000
+Prevalence            0.08333   0.0625   0.1042  0.04167   0.1667  0.12500   0.0625  0.04167   0.0625    0.1458    0.0625   0.04167
+Detection Rate        0.08333   0.0625   0.1042  0.04167   0.1250  0.08333   0.0625  0.04167   0.0625    0.1250    0.0625   0.04167
+Detection Prevalence  0.08333   0.0625   0.1042  0.04167   0.1250  0.08333   0.1042  0.06250   0.0625    0.1458    0.0625   0.06250
+Balanced Accuracy     1.00000   1.0000   1.0000  1.00000   0.8750  0.83333   0.9778  0.98913   1.0000    0.9164    1.0000   0.98913
+
+Final Model Development Utilizing Slope Classes:
+- In order for the raster class map to have the capability to run iterpretations that a SSURGO product would be able to produce, the final raster class map must contain more traditional map unit concepts - slope classes. 
+- Conceptually, breaking the raster class map futher into slope breaks within each "class" does not change the validity and accuracy of the model as the classes or soil series within each class are not altered in their location.  They are the same series/class, just broken into ranges of slopes. 
+ 
+Final Classes Based on Slope:
+MUNAME
+Burton-Wayah complex, 15 to 30  percent slopes, stony
+Burton-Wayah complex, 30 to 50 percent slopes, stony
+Burton-Wayah complex, 50 to 95 percent slopes, stony
+Burton-Wayah complex, 8 to 15 percent slopes, stony
+Cashiers gravelly fine sandy loam, 30 to 50 percent slopes
+Cashiers gravelly fine sandy loam, 50 to 95 percent slopes
+Chandler gravelly fine sandy loam, 15 to 30 percent slopes
+Chandler gravelly fine sandy loam, 30 to 50 percent slopes
+Chandler gravelly fine sandy loam, 50 to 95 percent slopes
+Cleveland-Ashe, stony-Rock outcrop complex, 30 to 95 percent slopes
+Craggey, stony-Rock outcrop complex, 0 to 8 percent slopes
+Craggey, stony-Rock outcrop complex, 15 to 30 percent slopes
+Craggey, stony-Rock outcrop complex, 30 to 50 percent slopes
+Craggey, stony-Rock outcrop complex, 50 to 95 percent slopes
+Craggey, stony-Rock outcrop complex, 8 to 15 percent slopes
+Cullasaja-Tuckasegee complex, 15 to 30 percent slopes, stony
+Cullasaja-Tuckasegee complex, 30 to 50 percent slopes, stony
+Cullasaja-Tuckasegee complex, 50 to 95 percent slopes, stony
+Edneyville-Chestnut complex, 15 to 30 percent slopes, stony
+Edneyville-Chestnut complex, 30 to 50 percent slopes, stony
+Edneyville-Chestnut complex, 50 to 95 percent slopes, stony
+Evard-Cowee complex, 0 to 8 percent slopes, stony
+Evard-Cowee complex, 15 to 30 percent slopes, stony
+Evard-Cowee complex, 30 to 50 percent slopes, stony
+Evard-Cowee complex, 50 to 95 percent slopes, stony
+Evard-Cowee complex, 8 to 15 percent slopes, stony
+Plott fine sandy loam, 15 to 30 percent slopes, stony
+Plott fine sandy loam, 30 to 50 percent slopes, stony
+Plott fine sandy loam, 50 to 95 percent slopes, stony
+Saunook loam, 0 to 8 percent slopes
+Saunook loam, 15 to 30 percent slopes
+Saunook loam, 30 to 50 percent slopes
+Saunook loam, 50 to 95 percent slopes
+Saunook loam, 8 to 15 percent slopes
+Tanasee sandy loam, 30 to 50 percent slopes, stony
+Tanasee sandy loam, 50 to 95 percent slopes, stony
+Tanasee sandy loam,15 to 30 percent slopes, stony
+Trimont gravelly loam, 30 to 50 percent slopes, stony
+Trimont gravelly loam, 50 to 95 percent slopes, stony

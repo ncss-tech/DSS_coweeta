@@ -1,9 +1,0 @@
-<PAMDataset>
-  <PAMRasterBand band="1">
-    <CategoryNames>
-      <Category></Category>
-      <Category>Complex</Category>
-      <Category>Consociation</Category>
-    </CategoryNames>
-  </PAMRasterBand>
-</PAMDataset>
