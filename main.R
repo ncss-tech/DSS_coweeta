@@ -5,6 +5,16 @@
 # estimate GCS BBOX for project
 source('get-project-BBOX.R')
 
+## prepare soil data: spatial + tabular
+source('01-prepare-soil-data.R')
+
+## aggregate soil data
+
+
+## soil maps from aggregate data
+
+
+
 
 # get 10m DEM
 source('get-DEM.R')

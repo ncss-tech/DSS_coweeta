@@ -3,6 +3,18 @@ library(soilDB)
 library(rasterVis)
 library(viridisLite)
 library(sf)
+library(aqp)
+
+## Input Data:
+# * coweeta watershed outlines (UTM z17)
+# * FY23 RSS grid (NC, EPSG:5070)
+# * FY23 SSURGO polygons (SDA, WGS84)
+
+## Output Data (UTM z17):
+# * RSS 10m grid
+# * SSURGO 10m grid
+# * SSURGO original polygons
+# * RSS + SSURGO tabular data as SPC
 
 
 ## Notes:
@@ -10,13 +22,6 @@ library(sf)
 # * grid cells are non-standard keys -> RAT -> [musym] -> mapunit -> [mukey]
 # --> use FY23 RSS instead: 10m grid via WCS
 # --> tabular RSS data via local download 
-
-## Output Data (UTM z17):
-# * RSS 10m grid
-# * SSURGO 10m grid
-# * SSURGO original polygons
-
-
 # * DEM and derivatives will work on a larger area, for complete basin characterization
 
 
@@ -56,6 +61,11 @@ writeRaster(rss, filename = 'grids/rss_utm.tif', overwrite = TRUE)
 # WGS84
 s <- SDA_spatialQuery(b, what = 'mupolygon', geomIntersection = TRUE)
 
+# SDA errors
+if(inherits(s, 'try-error')) {
+  stop('SDA returned an error', call. = FALSE)
+}
+
 # transform to UTM z17
 s <- project(s, crs(o))
 
@@ -76,21 +86,104 @@ s.rast <- mask(crop(s.rast, rss), rss)
 # init RAT
 s.rast <- as.factor(s.rast)
 
+## TODO: this doesn't change / remove 'label' column
+# fix names in RAT
+set.names(s.rast, 'mukey')
+rat <- cats(s.rast)[[1]]
+rat$mukey <- rat$label
+levels(s.rast) <- rat
+
 # check: ok
-plot(s.rast)
+plot(s.rast, axes = FALSE)
 lines(s)
 
 # save for later, this includes .xml file with RAT
 writeRaster(s.rast, filename = 'grids/ssurgo_utm.tif', overwrite = TRUE)
 
 
+## FY23 RSS tabular data
+# local files
+# https://nrcs.app.box.com/v/soils/folder/176851236810
 
-## RSS spatial data
-# cell values are map unit keys
-# read as grid + RAT
-r <- rast('Raster soil survey/Coweeta_Final_raster.tif')
+.rss_path <- 'e:/gis_data/RSS/RSS_NC.gdb'
+st_layers(.rss_path)
 
-# RAT: raster attribute table
-rat <- read.dbf('Raster soil survey/Coweeta_Final_raster.tif.vat.dbf', as.is = TRUE)
-names(rat) <- tolower(names(rat))
+# load relevant tables
+rss.mu <- st_read(.rss_path, layer = 'mapunit')
+rss.co <- st_read(.rss_path, layer = 'component')
+rss.hz <- st_read(.rss_path, layer = 'chorizon')
 
+# extract RSS RAT
+# use these mukey to subset RSS tabular data
+rat <- cats(rss)[[1]]
+
+# check for missing symbols
+# none missing from RAT
+setdiff(rat$mukey, rss.mu$mukey)
+
+# map unit table contains some extra
+setdiff(rss.mu$mukey, rat$mukey)
+
+# subset RSS tables
+rss.mu <- rss.mu[rss.mu$mukey %in% rat$mukey, ]
+rss.co <- rss.co[rss.co$mukey %in% rss.mu$mukey, ]
+rss.hz <- rss.hz[rss.hz$cokey %in% rss.co$cokey, ]
+
+# save just in case we need these
+save(rss.mu, rss.co, rss.hz, file = 'data/rss-tab-data-raw.rda')
+
+
+## FY23 SSURGO tabular data
+# get from SDA
+# use rasterized SSURGO mukey
+rat <- cats(s.rast)[[1]]
+
+.mukeys <- as.numeric(rat$mukey)
+ssurgo.mu <- SDA_query(sprintf("SELECT * FROM mapunit WHERE mukey IN %s", format_SQL_in_statement(.mukeys)))
+ssurgo.co <- SDA_query(sprintf("SELECT * FROM component WHERE mukey IN %s", format_SQL_in_statement(.mukeys)))
+
+.cokeys <- unique(ssurgo.co$cokey)
+ssurgo.hz <- SDA_query(sprintf("SELECT * FROM chorizon WHERE cokey IN %s", format_SQL_in_statement(.cokeys)))
+
+# save just in case we need these
+save(ssurgo.mu, ssurgo.co, ssurgo.hz, file = 'data/ssurgo-tab-data-raw.rda')
+
+
+## upgrade tabular data -> SPC
+depths(rss.hz) <- cokey ~ hzdept_r + hzdepb_r
+site(rss.hz) <- rss.co
+site(rss.hz) <- rss.mu
+
+depths(ssurgo.hz) <- cokey ~ hzdept_r + hzdepb_r
+site(ssurgo.hz) <- ssurgo.co
+site(ssurgo.hz) <- ssurgo.mu
+
+# note different component key style
+plotSPC(rss.hz[1:10, ])
+plotSPC(ssurgo.hz[1:10, ])
+
+## combine
+site(rss.hz)$source <- 'RSS'
+site(ssurgo.hz)$source <- 'SSURGO'
+spc <- c(rss.hz, ssurgo.hz)
+
+# set horizon name
+hzdesgnname(spc) <- 'hzname'
+
+# check: 216 profiles
+length(spc)
+
+# checkHzDepthLogic(spc)
+
+## compute depth class
+sdc <- getSoilDepthClass(spc)
+site(spc) <- sdc
+
+table(spc$depth.class)
+table(spc$source, spc$depth.class)
+
+
+## save
+saveRDS(spc, file = 'data/combined-tab-data-SPC.rds')
+
+# done
