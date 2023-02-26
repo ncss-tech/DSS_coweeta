@@ -13,7 +13,12 @@ lut <- readRDS('data/soil-depth-texture-classe-lut.rds')
 
 # check classes
 str(lut$soil.type)
+levels(lut$soil.type)
 table(lut$source, lut$soil.type)
+
+table(lut$source, lut$compname)
+
+
 
 ## ensure that factor levels / ordering are not lost in subsequent steps
 # use integer codes
