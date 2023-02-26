@@ -20,23 +20,31 @@ fitDecayFunction <- function(z, p0, p) {
 
 dominantCondition <- function(i, v) {
   
+  # filter misc. areas
   i <- i[which(i$compkind != 'Miscellaneous area'), ]
   if(nrow(i) < 1) {
     return(NULL)
   }
   
+  # sum component percent by 'v'
   fm <- as.formula(sprintf("comppct_r ~ %s", v))
   a <- aggregate(fm, data = i, FUN = sum, na.rm = TRUE)
   
+  # most frequent
   idx <- order(a[['comppct_r']], decreasing = TRUE)[1]
   
+  # retain most frequent class and associated IDs
   res <- data.frame(
     mukey = i$mukey[1],
+    cokey = i$cokey[1],
+    compname = i$compname[1],
+    source = i$source[1],
     v = a[[v]][idx],
     pct = a[['comppct_r']][idx]
   )
   
-  names(res) <- c('mukey', v, 'pct')
+  # fix names
+  names(res) <- c('mukey', 'cokey', 'compname', 'source', v, 'pct')
   
   return(res)
 }

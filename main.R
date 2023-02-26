@@ -9,10 +9,10 @@ source('get-project-BBOX.R')
 source('01-prepare-soil-data.R')
 
 ## aggregate soil data
-
+source('02-aggregate-soil-data.R')
 
 ## soil maps from aggregate data
-
+source('03-prepare-soil-maps.R')
 
 
 

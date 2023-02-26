@@ -1,6 +1,16 @@
 <PAMDataset>
   <PAMRasterBand band="1">
     <Description>label</Description>
+    <Histograms>
+      <HistItem>
+        <HistMin>545799.5056818182</HistMin>
+        <HistMax>545887.4943181818</HistMax>
+        <BucketCount>88</BucketCount>
+        <IncludeOutOfRange>0</IncludeOutOfRange>
+        <Approximate>0</Approximate>
+        <HistCounts>1134|35|0|2988|0|1188|4510|14094|0|0|0|143|0|2590|1458|268|0|0|22903|10876|1548|0|0|0|0|0|0|0|0|3182|10577|8127|0|0|0|187|9754|37151|8244|0|0|0|1138|12339|0|0|0|0|0|0|0|0|0|15787|17818|681|0|19301|0|371|3937|663|0|26|0|0|0|0|0|0|0|0|0|0|3058|1716|993|0|919|0|0|0|42|0|0|417|73|29</HistCounts>
+      </HistItem>
+    </Histograms>
     <GDALRasterAttributeTable tableType="thematic">
       <FieldDefn index="0">
         <Name>ID</Name>
@@ -208,5 +218,12 @@
         <F>545887</F>
       </Row>
     </GDALRasterAttributeTable>
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">545887</MDI>
+      <MDI key="STATISTICS_MEAN">545835.96646312</MDI>
+      <MDI key="STATISTICS_MINIMUM">545800</MDI>
+      <MDI key="STATISTICS_STDDEV">17.838775749186</MDI>
+      <MDI key="STATISTICS_VALID_PERCENT">61.87</MDI>
+    </Metadata>
   </PAMRasterBand>
 </PAMDataset>

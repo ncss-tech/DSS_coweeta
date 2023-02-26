@@ -3,19 +3,23 @@ library(aqp)
 library(igraph)
 library(viridisLite)
 
+## mukey
 # RSS
 r <- rast('grids/rss_utm.tif')
 # SSURGO
 s <- rast('grids/ssurgo_utm.tif')
 
-head(cats(r)[[1]])
-head(cats(s)[[1]])
+## TODO: compare compname and many other things
 
-# TODO: use musym or something else besides mukey
+# ## simplified soil type
+# # RSS
+# r <- rast('grids/rss-soiltype-class.tif')
+# # SSURGO
+# s <- rast('grids/ssurgo-soiltype-class.tif')
+# 
+
+## combined mu/component/hz data as SPC
 x <- readRDS('data/combined-tab-data-SPC.rds')
-
-table(spc$source, spc$compname)
-
 
 # mukind by source
 mu <- unique(site(x)[, c('mukey', 'mukind', 'source')])

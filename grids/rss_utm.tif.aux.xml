@@ -1,6 +1,16 @@
 <PAMDataset>
   <PAMRasterBand band="1">
     <Description>mukey</Description>
+    <Histograms>
+      <HistItem>
+        <HistMin>3244720.512820513</HistMin>
+        <HistMax>3244759.487179487</HistMax>
+        <BucketCount>39</BucketCount>
+        <IncludeOutOfRange>0</IncludeOutOfRange>
+        <Approximate>0</Approximate>
+        <HistCounts>570|2879|2950|63|64|1333|450|4227|2239|10270|90|408|1655|1084|5637|122|21199|25030|3037|18963|7363|623|189|1575|8206|119|18124|30321|1239|2444|11481|10329|366|187|639|4355|4169|8409|7857</HistCounts>
+      </HistItem>
+    </Histograms>
     <GDALRasterAttributeTable tableType="thematic">
       <FieldDefn index="0">
         <Name>value</Name>
@@ -213,5 +223,12 @@
         <F>3244759</F>
       </Row>
     </GDALRasterAttributeTable>
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">3244759</MDI>
+      <MDI key="STATISTICS_MEAN">3244743.1134315</MDI>
+      <MDI key="STATISTICS_MINIMUM">3244721</MDI>
+      <MDI key="STATISTICS_STDDEV">8.8212568800426</MDI>
+      <MDI key="STATISTICS_VALID_PERCENT">61.87</MDI>
+    </Metadata>
   </PAMRasterBand>
 </PAMDataset>
