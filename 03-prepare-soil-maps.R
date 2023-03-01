@@ -14,9 +14,10 @@ lut <- readRDS('data/soil-depth-texture-classe-lut.rds')
 # check classes
 str(lut$soil.type)
 levels(lut$soil.type)
-table(lut$source, lut$soil.type)
 
-table(lut$source, lut$compname)
+table(source = lut$source, soil.type = lut$soil.type)
+
+table(source = lut$source, compname = lut$compname)
 
 
 

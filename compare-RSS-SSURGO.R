@@ -11,12 +11,12 @@ s <- rast('grids/ssurgo_utm.tif')
 
 ## TODO: compare compname and many other things
 
-# ## simplified soil type
-# # RSS
-# r <- rast('grids/rss-soiltype-class.tif')
-# # SSURGO
-# s <- rast('grids/ssurgo-soiltype-class.tif')
-# 
+## simplified soil type
+# RSS
+r <- rast('grids/rss-soiltype-class.tif')
+# SSURGO
+s <- rast('grids/ssurgo-soiltype-class.tif')
+
 
 ## combined mu/component/hz data as SPC
 x <- readRDS('data/combined-tab-data-SPC.rds')

@@ -15,6 +15,8 @@ source('02-aggregate-soil-data.R')
 source('03-prepare-soil-maps.R')
 
 
+####### Need to update the following scripts to use the new soil data #########
+
 
 # get 10m DEM
 source('get-DEM.R')

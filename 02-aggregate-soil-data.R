@@ -1,3 +1,11 @@
+
+## TODO: think about implications of aggregation 
+## depth class -> texture class
+## 
+## does it make sense to do these separately?
+
+
+
 library(aqp)
 library(lattice)
 library(tactile)
@@ -38,8 +46,11 @@ x.sub <- subset(x, cokey %in% unique(depth.lut$cokey))
 x.sub$texture <- ssc_to_texcl(sand = x.sub$sandtotal_r, clay = x.sub$claytotal_r, simplify = TRUE) 
 
 # check: ok
-par(mar = c(0, 0, 2, 1))
+par(mar = c(0, 0, 3, 1))
 plotSPC(x.sub[1:30, ], color = 'texture')
+
+plotSPC(x.sub, color = 'texture', name = '', print.id = FALSE, width = 0.35)
+
 
 ## TODO: is this reasonable?
 ## derive most frequent soil texture
