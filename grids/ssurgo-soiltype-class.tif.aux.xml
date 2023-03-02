@@ -1,0 +1,12 @@
+<PAMDataset>
+  <PAMRasterBand band="1">
+    <Description>soil.type.numeric</Description>
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">5</MDI>
+      <MDI key="STATISTICS_MEAN">1.9932626608857</MDI>
+      <MDI key="STATISTICS_MINIMUM">1</MDI>
+      <MDI key="STATISTICS_STDDEV">1.2250274919261</MDI>
+      <MDI key="STATISTICS_VALID_PERCENT">61.87</MDI>
+    </Metadata>
+  </PAMRasterBand>
+</PAMDataset>

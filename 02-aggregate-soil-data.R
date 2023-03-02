@@ -65,11 +65,20 @@ a <- slab(x.sub, cokey ~ sandtotal_r + claytotal_r, slab.structure = c(0, 200), 
 w <- dcast(a, cokey ~ variable, value.var = 'value')
 w$texture <- ssc_to_texcl(sand = w$sandtotal_r, clay = w$claytotal_r, simplify = TRUE)
 
-# check
+## check degree of aggregation
+g <- merge(horizons(x.sub)[, c('cokey', 'texture')], w[, c('cokey', 'texture')], by = 'cokey', all.x = TRUE, sort = FALSE)
 
+names(g) <- c('cokey', 'original.texture', 'agg.texture')
+
+g$agg.texture <- factor(g$agg.texture, levels = levels(g$original.texture))
+
+
+# cross-tabulation
 # note that range of soil texture classes is reduced
-table(x.sub$texture)
-table(w$texture)
+g.tab <- table(original = g$original.texture, aggregated = g$agg.texture)
+round(prop.table(g.tab, margin = 1) * 100)
+
+
 
 ## TODO: report on the loss of detail, esp. abrupt textural changes
 # hmm.. a lot of simplification
