@@ -16,6 +16,11 @@ source('local-functions.R')
 ## combined mu/component data, as SPC
 x <- readRDS('data/combined-tab-data-SPC.rds')
 
+## investigate mukind by source
+xtabs(~ source + mukind, data = unique(site(x)[, c('mukey', 'source', 'mukind')]))
+
+
+
 ## original proportions of depth class / by source
 xtabs(~ source + depth.class, data = site(x))
 

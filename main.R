@@ -1,6 +1,9 @@
+## 
 ##
 ##
-##
+
+
+## TODO: convert to targets workflow if isn't too complex 
 
 # estimate GCS BBOX for project
 source('get-project-BBOX.R')

@@ -1,13 +1,13 @@
 library(terra)
 library(aqp)
 
-z <- readRDS('Raster soil survey/Mesic_results/training_data.rds')
+z <- readRDS('original-RSS-files/Mesic_results/training_data.rds')
 str(z)
 
 table(z$Current_Ta)
 
-# (x <- rast('Raster soil survey/Frigid_results/probmatrix_sffrigid.tif'))
-(x <- rast('Raster soil survey/Mesic_results/probmatrix_sf2.tif'))
+# (x <- rast('original-RSS-files/Frigid_results/probmatrix_sffrigid.tif'))
+(x <- rast('original-RSS-files/Mesic_results/probmatrix_sf2.tif'))
 
 plot(x)
 
