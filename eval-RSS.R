@@ -1,3 +1,6 @@
+## TODO: comment / document / synthesize for group discussion + stats class
+
+
 library(terra)
 library(aqp)
 
@@ -11,7 +14,8 @@ table(z$Current_Ta)
 
 plot(x)
 
-hist(x / 100)
+par(mar = c(3, 4, 2, 1))
+hist(x / 100, las = 1)
 
 # plot(x / 100)
 
@@ -27,7 +31,7 @@ equal.prob.H <- function(n, b) {
   shannonEntropy(p, b = b)
 }
 
-hist(h, breaks = 50)
+hist(h, breaks = 50, las = 1)
 abline(v = equal.prob.H(nlyr(x), b = 2), col = 2)
 abline(v = equal.prob.H(nlyr(x), b = 2) * 0.95, col = 2)
 abline(v = equal.prob.H(nlyr(x), b = 2) * 0.90, col = 2)
