@@ -86,5 +86,27 @@ mtext('Approximate Area Proportion within Coweeta', side = 1, line = 0, at = 0.5
 dev.off()
 
 
+## RSS horizon data
+s <- readRDS('data/combined-tab-data-SPC.rds')
+
+s <- subset(s, source == 'RSS')
+
+s <- unique(s, vars = c('compname', 'hzdept_r', 'hzdepb_r'))
+
+site(s) <- co.area
+
+# re-order according to component area 
+s.idx <- order(s$comp.ac, decreasing = TRUE)
 
 
+ragg::agg_png(filename = 'RSS-components-awc_r.png', width = 2200, height = 900, scaling = 1.75)
+
+par(mar = c(1.5, 0, 3, 0))
+
+plotSPC(s, label = 'compname', color = 'awc_r', col.label = 'Plant Available Water Holding Capacity (cm/cm)', width = 0.33, name.style = 'center-center', shrink = TRUE, id.style = 'top', cex.names = 0.75, plot.order = s.idx, cex.id = 0.66, max.depth = 170, axis.line.offset = -6, cex.depth.axis = 1, n.depth.ticks = 10, plot.depth.axis = TRUE)
+
+axis(side = 1, at = 1:length(s), labels = round(s$proportion[s.idx], 2), line = -2, cex.axis = 1)
+
+mtext('Approximate Area Proportion within Coweeta', side = 1, line = 0, at = 0.5, adj = 0, font = 2)
+
+dev.off()
