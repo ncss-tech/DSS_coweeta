@@ -36,23 +36,17 @@ options(width=100, stringsAsFactors=FALSE)
 library(soilDB)
 library(aqp)
 library(sharpshootR)
-library(raster)
+library(terra)
 library(rasterVis)
-library(viridisLite)
 library(sf)
-library(foreign)
 library(stringi)
 library(knitr)
 library(kableExtra)
 
 
 # RSS: cell values are map unit keys
-r <- raster('Raster soil survey/Coweeta_Final_raster.tif')
-r <- ratify(r)
-
-# RAT: raster attribute table
-rat <- read.dbf('Raster soil survey/Coweeta_Final_raster.tif.vat.dbf', as.is = TRUE)
-names(rat) <- tolower(names(rat))
+# has a simple raster attribute table
+r <- rast('grids/rss_utm.tif')
 
 # Coweeta watersheds
 b <- read_sf('vect/Coweeta_Hydrologic_Laboratory.shp')
@@ -66,40 +60,17 @@ x <- st_union(b)
 # get intersecting SSURGO linework as SpatialPolygonsDataFrame from SDA
 # this uses the bounding-box
 mu.poly <- SDA_spatialQuery(x, what = 'mupolygon', geomIntersection = TRUE)
-mu.poly <- st_transform(mu.poly, st_crs(proj4string(r)))
+mu.poly <- st_transform(mu.poly, st_crs(crs(r)))
 
+# transform to common CRS
 b <- st_transform(b, st_crs(r))
 p <- st_transform(p, st_crs(r))
-
-## get some more information about these MU / components
-## is that even possible with SDA?
-# nope.
-is <- format_SQL_in_statement(rat$MUSYM)
-SDA_query(sprintf("SELECT * from mapunit WHERE nationalmusym IN %s;", is))
 ```
 
 
-Process RSS tabular data.
+Load pre-processed tabular data.
 ```{r}
-## FGDB
-# st_layers('Raster soil survey/rss_nc/rss_nc.gdb')
-
-# musym is the national mu symbol
-rss.mu <- st_read('Raster soil survey/rss_nc/rss_nc.gdb', layer = 'mapunit')
-rss.co <- st_read('Raster soil survey/rss_nc/rss_nc.gdb', layer = 'component')
-rss.hz <- st_read('Raster soil survey/rss_nc/rss_nc.gdb', layer = 'chorizon')
-
-## check for missing symbols
-# none missing from RAT
-setdiff(rat$MUSYM, rss.mu$musym)
-# map unit table contains some extra
-setdiff(rss.mu$musym, rat$MUSYM)
-
-## subset child tables
-rss.mu <- rss.mu[rss.mu$musym %in% rat$musym, ]
-rss.co <- rss.co[rss.co$mukey %in% rss.mu$mukey, ]
-rss.hz <- rss.hz[rss.hz$cokey %in% rss.co$cokey, ]
-
+load('data/rss-tab-data-raw.rda')
 ```
 
 
@@ -255,6 +226,7 @@ SoilTaxonomyDendrogram(osds, width = 0.35, name.style = 'center-center', y.offse
 # get plotting details from aqp environment
 lsp <- get('last_spc_plot', envir = aqp.env)
 
+# sensor depths
 .depths <- (c(10, 20, 50, 80, 100) * lsp$scaling.factor) + lsp$y.offset[1]
 
 abline(h = .depths, lty = 2, col = 'green')
@@ -272,6 +244,7 @@ par(mar = c(0, 0, 0, 0.5))
 
 plotSPC(o.sub, width = 0.35, name.style = 'center-center', hz.distinctness.offset = 'hzd', shrink = TRUE, hz.depths = TRUE, fixLabelCollisions = TRUE, hz.depths.offset = 0.05, id.style = 'top', cex.names = 0.75, plot.order = idx, cex.id = 0.66, max.depth = 225, axis.line.offset = -4, cex.depth.axis = 1, n.depth.ticks = 10)
 
+# planned depths for soil sensors
 .depths <- c(10, 20, 50, 80, 100)
 segments(x0 = 0.5, y0 = .depths, x1 = length(o.sub) + 1, y1 = .depths, lty = 2, col = 'blue', lwd = 1.5)
 
