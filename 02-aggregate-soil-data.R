@@ -32,6 +32,11 @@ x$depth.class <- factor(x$depth.class, ordered = TRUE)
 x$simple.depth.class <- ifelse(x$depth.class <= 'shallow', 'shallow', 'deep')
 
 # mostly > 50cm
+knitr::kable(
+  prop.table(xtabs(~ source + depth.class, data = site(x)), margin = 1), 
+  digits = 2
+)
+
 prop.table(xtabs(~ source + simple.depth.class, data = site(x)), margin = 1)
 
 ## develop dominant condition: simplified soil depth class
@@ -55,6 +60,34 @@ par(mar = c(0, 0, 3, 1))
 plotSPC(x.sub[1:30, ], color = 'texture')
 
 plotSPC(x.sub, color = 'texture', name = '', print.id = FALSE, width = 0.35)
+
+ragg::agg_png(filename = 'figures/coweeta-RSS-SSURGO-components-texture.png', width = 1200, height = 500)
+
+par(mar = c(0, 0, 3, 0))
+groupedProfilePlot(x.sub, groups = 'source', color = 'texture', name = '', print.id = FALSE, width = 0.35, depth.axis = list(style = 'compact', line = -6, cex = 0.8), col.label = 'Texture Class (<2mm fraction)', col.legend.cex = 1.5)
+
+dev.off()
+
+
+par(mar = c(0, 0, 3, 0))
+groupedProfilePlot(x.sub, groups = 'source', color = 'texture', name = '', label = 'compname', width = 0.35, depth.axis = list(style = 'compact', line = -6, cex = 0.8), col.label = 'Texture Class (<2mm fraction)', col.legend.cex = 1.5)
+
+
+
+##
+x$texture <- ssc_to_texcl(sand = x$sandtotal_r, clay = x$claytotal_r, simplify = TRUE) 
+
+
+x$pi <- profileInformationIndex(x, vars = c('awc_r'))
+tapply(x$pi, x$source, median)
+
+x.u <- unique(x, vars = c('hzdept_r', 'hzdepb_r', 'awc_r', 'compname', 'hzname'))
+table(x.u$source)
+
+par(mar = c(0, 0, 3, 0))
+groupedProfilePlot(x.u, groups = 'source', color = 'awc_r', name = '', label = 'compname', width = 0.35, depth.axis = list(style = 'compact', line = -4, cex = 0.8), col.label = 'AWC', col.legend.cex = 1)
+
+
 
 
 ## TODO: is this reasonable?

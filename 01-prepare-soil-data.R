@@ -88,10 +88,10 @@ s.rast <- as.factor(s.rast)
 
 ## TODO: this doesn't change / remove 'label' column
 # fix names in RAT
-set.names(s.rast, 'mukey')
-rat <- cats(s.rast)[[1]]
-rat$mukey <- rat$label
-levels(s.rast) <- rat
+# set.names(s.rast, 'mukey')
+# rat <- cats(s.rast)[[1]]
+# rat$mukey <- rat$label
+# levels(s.rast) <- rat
 
 # check: ok
 plot(s.rast, axes = FALSE)
@@ -112,6 +112,7 @@ st_layers(.rss_path)
 rss.mu <- st_read(.rss_path, layer = 'mapunit')
 rss.co <- st_read(.rss_path, layer = 'component')
 rss.hz <- st_read(.rss_path, layer = 'chorizon')
+rss.corestrictions <- st_read(.rss_path, layer = 'corestrictions')
 
 # extract RSS RAT
 # use these mukey to subset RSS tabular data
@@ -128,9 +129,10 @@ setdiff(rss.mu$mukey, rat$mukey)
 rss.mu <- rss.mu[rss.mu$mukey %in% rat$mukey, ]
 rss.co <- rss.co[rss.co$mukey %in% rss.mu$mukey, ]
 rss.hz <- rss.hz[rss.hz$cokey %in% rss.co$cokey, ]
+rss.corestrictions <- rss.corestrictions[rss.corestrictions$cokey %in% rss.co$cokey, ]
 
 # save just in case we need these
-save(rss.mu, rss.co, rss.hz, file = 'data/rss-tab-data-raw.rda')
+save(rss.mu, rss.co, rss.hz, rss.corestrictions, file = 'data/rss-tab-data-raw.rda')
 
 
 ## FY23 SSURGO tabular data
@@ -144,9 +146,11 @@ ssurgo.co <- SDA_query(sprintf("SELECT * FROM component WHERE mukey IN %s", form
 
 .cokeys <- unique(ssurgo.co$cokey)
 ssurgo.hz <- SDA_query(sprintf("SELECT * FROM chorizon WHERE cokey IN %s", format_SQL_in_statement(.cokeys)))
+ssurgo.corestrictions <- SDA_query(sprintf("SELECT * FROM corestrictions WHERE cokey IN %s", format_SQL_in_statement(.cokeys)))
+
 
 # save just in case we need these
-save(ssurgo.mu, ssurgo.co, ssurgo.hz, file = 'data/ssurgo-tab-data-raw.rda')
+save(ssurgo.mu, ssurgo.co, ssurgo.hz, ssurgo.corestrictions, file = 'data/ssurgo-tab-data-raw.rda')
 
 
 ## upgrade tabular data -> SPC
@@ -181,6 +185,10 @@ site(spc) <- sdc
 
 table(spc$depth.class)
 table(spc$source, spc$depth.class)
+
+## TODO: add component restrictions data via restrictions<- method
+
+
 
 
 ## save
