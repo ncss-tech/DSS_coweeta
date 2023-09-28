@@ -2,15 +2,6 @@ library(terra)
 library(aqp)
 library(viridisLite)
 
-## TODO: make new maps
-## * soil depth
-## * depth to top of first restriction
-## * modified soil depth
-## * soil parameter file ID
-##
-
-
-
 ## 10m mukey grids (UTM z17), same grid topology
 r <- rast('grids/rss_utm.tif')
 s <- rast('grids/ssurgo_utm.tif')

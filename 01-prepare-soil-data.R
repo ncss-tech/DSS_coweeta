@@ -186,8 +186,57 @@ site(spc) <- sdc
 table(spc$depth.class)
 table(spc$source, spc$depth.class)
 
-## TODO: add component restrictions data via restrictions<- method
+## keep track of all restrictive features, using diagnostic horizons
+r <- make.groups(ssurgo = ssurgo.corestrictions, rss = rss.corestrictions)
+diagnostic_hz(spc) <- r
 
+(.tab <- xtabs( ~ reskind + which, data = r))
+round(prop.table(.tab, margin = 2), 2)
+
+## compute depth to top restrictive feature
+rr <- split(r, r$cokey)
+
+# depth to first restrictive feature (RV), by cokey
+rr <- lapply(rr, function(i) {
+  
+  # remove NA RV depths just in case
+  i <- i[which(!is.na(i$resdept_r)), ]
+  
+  # safely account for all NA
+  if(nrow(i) < 1) {
+    .depth <- NA
+    .kind <- NA
+  } else {
+    .idx <- order(i$resdept_r, decreasing = TRUE)
+    .depth <- i$resdept_r[.idx[1]]
+    .kind <- i$reskind[.idx[1]]
+  }
+  
+  # compile results
+  .d <- data.frame(
+    cokey = i$cokey[1],
+    reskind = .kind,
+    resdepth = .depth
+  )
+  
+  return(.d)
+})
+
+rr <- do.call('rbind', rr)
+row.names(rr) <- NULL
+
+# merge into site data
+site(spc) <- rr
+
+## new soil depth calculation, with restrictive features
+cor(spc$depth, spc$resdepth, use = 'complete.obs')
+spc$depth.to.restriction <- ifelse(spc$resdepth < spc$depth, spc$resdepth, spc$depth)
+
+hist(spc$depth.to.restriction, breaks = 20, las = 1)
+
+
+## classify <2mm soil texture class
+spc$texture <- ssc_to_texcl(sand = spc$sandtotal_r, clay = spc$claytotal_r, simplify = TRUE) 
 
 
 

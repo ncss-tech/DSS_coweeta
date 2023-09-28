@@ -23,8 +23,7 @@ r <- diagnostic_hz(x)
 (.tab <- xtabs( ~ reskind + which, data = r))
 round(prop.table(.tab, margin = 2), 2)
 
-## TODO: wt. mean soil properties to contact
-
+# 
 
 
 ## original proportions of depth class / by source

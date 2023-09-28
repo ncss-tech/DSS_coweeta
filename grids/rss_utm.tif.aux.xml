@@ -1,19 +1,9 @@
 <PAMDataset>
   <PAMRasterBand band="1">
     <Description>mukey</Description>
-    <Histograms>
-      <HistItem>
-        <HistMin>3244720.512820513</HistMin>
-        <HistMax>3244759.487179487</HistMax>
-        <BucketCount>39</BucketCount>
-        <IncludeOutOfRange>0</IncludeOutOfRange>
-        <Approximate>0</Approximate>
-        <HistCounts>570|2879|2950|63|64|1333|450|4227|2239|10270|90|408|1655|1084|5637|122|21199|25030|3037|18963|7363|623|189|1575|8206|119|18124|30321|1239|2444|11481|10329|366|187|639|4355|4169|8409|7857</HistCounts>
-      </HistItem>
-    </Histograms>
     <GDALRasterAttributeTable tableType="thematic">
       <FieldDefn index="0">
-        <Name>value</Name>
+        <Name>ID</Name>
         <Type>0</Type>
         <Usage>0</Usage>
       </FieldDefn>
@@ -22,213 +12,162 @@
         <Type>1</Type>
         <Usage>0</Usage>
       </FieldDefn>
-      <FieldDefn index="2">
-        <Name>ID</Name>
-        <Type>1</Type>
-        <Usage>0</Usage>
-      </FieldDefn>
       <Row index="0">
-        <F>3244721</F>
         <F>3244721</F>
         <F>3244721</F>
       </Row>
       <Row index="1">
         <F>3244722</F>
         <F>3244722</F>
-        <F>3244722</F>
       </Row>
       <Row index="2">
-        <F>3244723</F>
         <F>3244723</F>
         <F>3244723</F>
       </Row>
       <Row index="3">
         <F>3244724</F>
         <F>3244724</F>
-        <F>3244724</F>
       </Row>
       <Row index="4">
-        <F>3244725</F>
         <F>3244725</F>
         <F>3244725</F>
       </Row>
       <Row index="5">
         <F>3244726</F>
         <F>3244726</F>
-        <F>3244726</F>
       </Row>
       <Row index="6">
-        <F>3244727</F>
         <F>3244727</F>
         <F>3244727</F>
       </Row>
       <Row index="7">
         <F>3244728</F>
         <F>3244728</F>
-        <F>3244728</F>
       </Row>
       <Row index="8">
-        <F>3244729</F>
         <F>3244729</F>
         <F>3244729</F>
       </Row>
       <Row index="9">
         <F>3244730</F>
         <F>3244730</F>
-        <F>3244730</F>
       </Row>
       <Row index="10">
-        <F>3244731</F>
         <F>3244731</F>
         <F>3244731</F>
       </Row>
       <Row index="11">
         <F>3244732</F>
         <F>3244732</F>
-        <F>3244732</F>
       </Row>
       <Row index="12">
-        <F>3244733</F>
         <F>3244733</F>
         <F>3244733</F>
       </Row>
       <Row index="13">
         <F>3244734</F>
         <F>3244734</F>
-        <F>3244734</F>
       </Row>
       <Row index="14">
-        <F>3244735</F>
         <F>3244735</F>
         <F>3244735</F>
       </Row>
       <Row index="15">
         <F>3244736</F>
         <F>3244736</F>
-        <F>3244736</F>
       </Row>
       <Row index="16">
-        <F>3244737</F>
         <F>3244737</F>
         <F>3244737</F>
       </Row>
       <Row index="17">
         <F>3244738</F>
         <F>3244738</F>
-        <F>3244738</F>
       </Row>
       <Row index="18">
-        <F>3244739</F>
         <F>3244739</F>
         <F>3244739</F>
       </Row>
       <Row index="19">
         <F>3244740</F>
         <F>3244740</F>
-        <F>3244740</F>
       </Row>
       <Row index="20">
-        <F>3244741</F>
         <F>3244741</F>
         <F>3244741</F>
       </Row>
       <Row index="21">
         <F>3244742</F>
         <F>3244742</F>
-        <F>3244742</F>
       </Row>
       <Row index="22">
-        <F>3244743</F>
         <F>3244743</F>
         <F>3244743</F>
       </Row>
       <Row index="23">
         <F>3244744</F>
         <F>3244744</F>
-        <F>3244744</F>
       </Row>
       <Row index="24">
-        <F>3244745</F>
         <F>3244745</F>
         <F>3244745</F>
       </Row>
       <Row index="25">
         <F>3244746</F>
         <F>3244746</F>
-        <F>3244746</F>
       </Row>
       <Row index="26">
-        <F>3244747</F>
         <F>3244747</F>
         <F>3244747</F>
       </Row>
       <Row index="27">
         <F>3244748</F>
         <F>3244748</F>
-        <F>3244748</F>
       </Row>
       <Row index="28">
-        <F>3244749</F>
         <F>3244749</F>
         <F>3244749</F>
       </Row>
       <Row index="29">
         <F>3244750</F>
         <F>3244750</F>
-        <F>3244750</F>
       </Row>
       <Row index="30">
-        <F>3244751</F>
         <F>3244751</F>
         <F>3244751</F>
       </Row>
       <Row index="31">
         <F>3244752</F>
         <F>3244752</F>
-        <F>3244752</F>
       </Row>
       <Row index="32">
-        <F>3244753</F>
         <F>3244753</F>
         <F>3244753</F>
       </Row>
       <Row index="33">
         <F>3244754</F>
         <F>3244754</F>
-        <F>3244754</F>
       </Row>
       <Row index="34">
-        <F>3244755</F>
         <F>3244755</F>
         <F>3244755</F>
       </Row>
       <Row index="35">
         <F>3244756</F>
         <F>3244756</F>
-        <F>3244756</F>
       </Row>
       <Row index="36">
-        <F>3244757</F>
         <F>3244757</F>
         <F>3244757</F>
       </Row>
       <Row index="37">
         <F>3244758</F>
         <F>3244758</F>
-        <F>3244758</F>
       </Row>
       <Row index="38">
         <F>3244759</F>
         <F>3244759</F>
-        <F>3244759</F>
       </Row>
     </GDALRasterAttributeTable>
-    <Metadata>
-      <MDI key="STATISTICS_MAXIMUM">3244759</MDI>
-      <MDI key="STATISTICS_MEAN">3244743.1134315</MDI>
-      <MDI key="STATISTICS_MINIMUM">3244721</MDI>
-      <MDI key="STATISTICS_STDDEV">8.8212568800426</MDI>
-      <MDI key="STATISTICS_VALID_PERCENT">61.87</MDI>
-    </Metadata>
   </PAMRasterBand>
 </PAMDataset>
