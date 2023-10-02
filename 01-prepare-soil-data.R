@@ -230,9 +230,12 @@ site(spc) <- rr
 
 ## new soil depth calculation, with restrictive features
 cor(spc$depth, spc$resdepth, use = 'complete.obs')
-spc$depth.to.restriction <- ifelse(spc$resdepth < spc$depth, spc$resdepth, spc$depth)
+
+spc$depth.to.restriction <- ifelse(spc$resdepth < spc$depth & !is.na(spc$resdepth), spc$resdepth, spc$depth)
 
 hist(spc$depth.to.restriction, breaks = 20, las = 1)
+
+table(spc$depth.to.restriction, useNA = 'always')
 
 
 ## classify <2mm soil texture class

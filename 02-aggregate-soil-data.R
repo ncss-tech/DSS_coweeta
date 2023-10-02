@@ -48,7 +48,7 @@ prop.table(xtabs(~ source + simple.depth.class, data = site(x)), margin = 1)
 ## develop dominant condition: simplified soil depth class
 s <- site(x)
 z <- split(s, s$mukey)
-z <- lapply(z, dominantCondition, v = 'simple.depth.class')
+z <- lapply(z, dominantCondition, v = 'depth.to.restriction')
 
 # develop LUT by mukey/cokey
 depth.lut <- do.call('rbind', z)
@@ -57,9 +57,6 @@ depth.lut <- do.call('rbind', z)
 ## most-frequent soil texture class (<2mm) by dominant soil depth condition
 # SPC
 x.sub <- subset(x, cokey %in% unique(depth.lut$cokey)) 
-
-# classify <2mm soil texture class
-x.sub$texture <- ssc_to_texcl(sand = x.sub$sandtotal_r, clay = x.sub$claytotal_r, simplify = TRUE) 
 
 # check: ok
 par(mar = c(0, 0, 3, 1))
@@ -79,10 +76,7 @@ par(mar = c(0, 0, 3, 0))
 groupedProfilePlot(x.sub, groups = 'source', color = 'texture', name = '', label = 'compname', width = 0.35, depth.axis = list(style = 'compact', line = -6, cex = 0.8), col.label = 'Texture Class (<2mm fraction)', col.legend.cex = 1.5)
 
 
-
 ##
-x$texture <- ssc_to_texcl(sand = x$sandtotal_r, clay = x$claytotal_r, simplify = TRUE) 
-
 
 x$pi <- profileInformationIndex(x, vars = c('awc_r'))
 tapply(x$pi, x$source, median)
