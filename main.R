@@ -1,6 +1,6 @@
-## 
-##
-##
+## Sequential steps used to prepare soil data and DEM / derivatives from official sources.
+## 2023-10-05
+## D.E. Beaudette
 
 
 ## TODO: convert to targets workflow if isn't too complex 
