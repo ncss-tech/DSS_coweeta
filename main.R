@@ -18,18 +18,25 @@ source('02-aggregate-soil-data.R')
 source('03-prepare-soil-maps.R')
 
 
-####### Need to update the following scripts to use the new soil data #########
+## acquire DEM based on project BBOX, and generate derivatives
 
-
-# get 10m DEM
+# get 10m DEM from USGS
 source('get-DEM.R')
 
-# GRASS GIS: warp DEM -> projected CRS
+# GRASS GIS: warp/resampling of DEM -> projected CRS
 # GRASS GIS: DEM processing / derivatives
 source('process-DEM-GRASS.R')
 
 # SAGA GIS: DEM derivatives
 source('process-DEM-SAGA.R')
+
+
+####### Need to update the following scripts to use the new soil data #########
+
+
+
+
+
 
 # prepare raster soil survey and derived grids
 source('prepare-RSS-data.R')

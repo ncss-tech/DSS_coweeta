@@ -1,3 +1,7 @@
+## Generate derivatives from a warped/resampled DEM. The NAD83 / UTM zone 17N (EPSG:26917) projected coordinate reference system is used.
+## 2023-10-05
+## D.E. Beaudette
+
 
 ##
 ## Instructions for a happy R--GRASS experience

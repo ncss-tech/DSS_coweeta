@@ -1,5 +1,11 @@
+## Prepare a DEM for all subsequent use and derivatives from USGS 10m NED. No warping or resampling is performed at this time.
+## 2023-10-05
+## D.E. Beaudette
+
 library(sf)
 library(elevatr)
+
+# using this vs. terra, as get_elev_raster() returns raster objects
 library(raster)
 
 # use watershed polygons for BBOX to request elevation data
@@ -14,8 +20,9 @@ x.gcs <- st_transform(x, 4326)
 x.buff.gcs <- st_transform(x.buff, 4326)
 
 # requires sf collection (geometry + attributes)
-# get DEM in GCS WGS84
+# get DEM in GCS WGS84 (no warp/resample)
 # use z = 14 for best available data
+# result is a RasterLayer (not terra::SpatRaster)
 e <- get_elev_raster(locations = x.buff.gcs, z = 12, clip = 'bbox')
 
 # check: OK
@@ -30,11 +37,6 @@ writeRaster(e, file = 'grids/elev.tif', overwrite = TRUE, options=c("COMPRESS=LZ
 
 # original PCS
 write_sf(x.buff, 'vect/coweeta_boundary_buff.shp', delete_layer = TRUE)
-
-
-
-
-
 
 
 
