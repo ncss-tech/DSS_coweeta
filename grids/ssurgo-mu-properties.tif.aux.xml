@@ -1,0 +1,599 @@
+<PAMDataset>
+  <PAMRasterBand band="1">
+    <Description>depth.to.restriction</Description>
+    <GDALRasterAttributeTable tableType="thematic">
+      <FieldDefn index="0">
+        <Name>ID</Name>
+        <Type>0</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="1">
+        <Name>mukey</Name>
+        <Type>2</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="2">
+        <Name>mukind</Name>
+        <Type>2</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="3">
+        <Name>invesintens</Name>
+        <Type>2</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="4">
+        <Name>compkind</Name>
+        <Type>2</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="5">
+        <Name>comppct_r</Name>
+        <Type>0</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="6">
+        <Name>compname</Name>
+        <Type>2</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="7">
+        <Name>depth.class</Name>
+        <Type>2</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="8">
+        <Name>depth</Name>
+        <Type>0</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="9">
+        <Name>resdepth</Name>
+        <Type>0</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="10">
+        <Name>depth.to.restriction</Name>
+        <Type>0</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="11">
+        <Name>wtmean.depth.to.restriction</Name>
+        <Type>1</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <Row index="0">
+        <F>545800</F>
+        <F>545800</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>45</F>
+        <F>Burton</F>
+        <F>mod.deep</F>
+        <F>91</F>
+        <F>91</F>
+        <F>91</F>
+        <F>70</F>
+      </Row>
+      <Row index="1">
+        <F>545801</F>
+        <F>545801</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>40</F>
+        <F>Burton</F>
+        <F>mod.deep</F>
+        <F>91</F>
+        <F>91</F>
+        <F>91</F>
+        <F>68.59999999999999</F>
+      </Row>
+      <Row index="2">
+        <F>545803</F>
+        <F>545803</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>80</F>
+        <F>Cashiers</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="3">
+        <F>545805</F>
+        <F>545805</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>80</F>
+        <F>Chandler</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="4">
+        <F>545806</F>
+        <F>545806</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>80</F>
+        <F>Chandler</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="5">
+        <F>545807</F>
+        <F>545807</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>80</F>
+        <F>Chandler</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="6">
+        <F>545811</F>
+        <F>545811</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>50</F>
+        <F>Chestnut</F>
+        <F>mod.deep</F>
+        <F>91</F>
+        <F>91</F>
+        <F>91</F>
+        <F>140.7777777777778</F>
+      </Row>
+      <Row index="7">
+        <F>545813</F>
+        <F>545813</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>40</F>
+        <F>Cleveland</F>
+        <F>shallow</F>
+        <F>43</F>
+        <F>43</F>
+        <F>43</F>
+        <F>65.40000000000001</F>
+      </Row>
+      <Row index="8">
+        <F>545814</F>
+        <F>545814</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>45</F>
+        <F>Cleveland</F>
+        <F>shallow</F>
+        <F>43</F>
+        <F>43</F>
+        <F>43</F>
+        <F>64</F>
+      </Row>
+      <Row index="9">
+        <F>545815</F>
+        <F>545815</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>45</F>
+        <F>Cleveland</F>
+        <F>shallow</F>
+        <F>38</F>
+        <F>38</F>
+        <F>38</F>
+        <F>53.35714285714285</F>
+      </Row>
+      <Row index="10">
+        <F>545818</F>
+        <F>545818</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>50</F>
+        <F>Cullasaja</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="11">
+        <F>545819</F>
+        <F>545819</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>45</F>
+        <F>Cullasaja</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="12">
+        <F>545820</F>
+        <F>545820</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>50</F>
+        <F>Cullasaja</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="13">
+        <F>545829</F>
+        <F>545829</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>50</F>
+        <F>Edneyville</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>160.25</F>
+      </Row>
+      <Row index="14">
+        <F>545830</F>
+        <F>545830</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>50</F>
+        <F>Edneyville</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>164</F>
+      </Row>
+      <Row index="15">
+        <F>545831</F>
+        <F>545831</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>50</F>
+        <F>Edneyville</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>170.4285714285714</F>
+      </Row>
+      <Row index="16">
+        <F>545835</F>
+        <F>545835</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>55</F>
+        <F>Evard</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>150.5</F>
+      </Row>
+      <Row index="17">
+        <F>545836</F>
+        <F>545836</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>50</F>
+        <F>Evard</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>152.375</F>
+      </Row>
+      <Row index="18">
+        <F>545837</F>
+        <F>545837</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>50</F>
+        <F>Evard</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>156.8157894736842</F>
+      </Row>
+      <Row index="19">
+        <F>545838</F>
+        <F>545838</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>50</F>
+        <F>Evard</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>152.375</F>
+      </Row>
+      <Row index="20">
+        <F>545842</F>
+        <F>545842</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>80</F>
+        <F>Fannin</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="21">
+        <F>545843</F>
+        <F>545843</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>80</F>
+        <F>Fannin</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="22">
+        <F>545853</F>
+        <F>545853</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>80</F>
+        <F>Plott</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="23">
+        <F>545854</F>
+        <F>545854</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>80</F>
+        <F>Plott</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="24">
+        <F>545855</F>
+        <F>545855</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>80</F>
+        <F>Reddies</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>66</F>
+        <F>66</F>
+        <F>66.29411764705883</F>
+      </Row>
+      <Row index="25">
+        <F>545857</F>
+        <F>545857</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>30</F>
+        <F>Cleveland</F>
+        <F>shallow</F>
+        <F>36</F>
+        <F>36</F>
+        <F>36</F>
+        <F>36</F>
+      </Row>
+      <Row index="26">
+        <F>545859</F>
+        <F>545859</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>80</F>
+        <F>Saunook</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>198.2289156626506</F>
+      </Row>
+      <Row index="27">
+        <F>545860</F>
+        <F>545860</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>80</F>
+        <F>Saunook</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="28">
+        <F>545861</F>
+        <F>545861</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>80</F>
+        <F>Saunook</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="29">
+        <F>545863</F>
+        <F>545863</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>80</F>
+        <F>Saunook</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>196.7142857142857</F>
+      </Row>
+      <Row index="30">
+        <F>545874</F>
+        <F>545874</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>85</F>
+        <F>Trimont</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="31">
+        <F>545875</F>
+        <F>545875</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>80</F>
+        <F>Trimont</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="32">
+        <F>545876</F>
+        <F>545876</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>50</F>
+        <F>Tuckasegee</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="33">
+        <F>545878</F>
+        <F>545878</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>50</F>
+        <F>Tuckasegee</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>185</F>
+      </Row>
+      <Row index="34">
+        <F>545882</F>
+        <F>545882</F>
+        <F>Complex</F>
+        <F>Order 2</F>
+        <F>Taxon above family</F>
+        <F>60</F>
+        <F>Udorthents</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="35">
+        <F>545885</F>
+        <F>545885</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>85</F>
+        <F>Wayah</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="36">
+        <F>545886</F>
+        <F>545886</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>85</F>
+        <F>Wayah</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+      <Row index="37">
+        <F>545887</F>
+        <F>545887</F>
+        <F>Consociation</F>
+        <F>Order 2</F>
+        <F>Series</F>
+        <F>85</F>
+        <F>Wayah</F>
+        <F>very.deep</F>
+        <F>203</F>
+        <F>-2147483648</F>
+        <F>203</F>
+        <F>203</F>
+      </Row>
+    </GDALRasterAttributeTable>
+  </PAMRasterBand>
+</PAMDataset>

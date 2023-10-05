@@ -14,8 +14,15 @@ source('01-prepare-soil-data.R')
 ## aggregate soil data
 source('02-aggregate-soil-data.R')
 
+
+## Note: this one needs some more work
 ## soil maps from aggregate data
-source('03-prepare-soil-maps.R')
+# source('03-prepare-soil-maps.R')
+
+
+## various thematic maps from aggregate data
+source('04-prepare-thematic-maps.R')
+
 
 
 ## acquire DEM based on project BBOX, and generate derivatives

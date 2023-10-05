@@ -2,6 +2,10 @@ library(terra)
 library(aqp)
 library(viridisLite)
 
+stop('need to finish converting / updating this code')
+
+
+
 ## TODO: make new maps
 ## * soil depth
 ## * depth to top of first restriction

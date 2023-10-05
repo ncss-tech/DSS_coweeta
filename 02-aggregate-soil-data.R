@@ -8,6 +8,7 @@ library(lattice)
 library(tactile)
 library(reshape2)
 
+
 source('local-functions.R')
 
 ## combined mu/component data, as SPC
@@ -23,7 +24,52 @@ r <- diagnostic_hz(x)
 (.tab <- xtabs( ~ reskind + which, data = r))
 round(prop.table(.tab, margin = 2), 2)
 
+
+
+
+## a very SIMPLE selection of 1 component / map unit
+## based on most frequent component name ~ sum(component percent)
+s <- site(x)
+ss <- split(s, s$mukey)
+z <- lapply(ss, dominantComponent)
+dominant.cokey.lut <- do.call('rbind', z)
+row.names(dominant.cokey.lut) <- NULL
+
+# check number / source
+table(dominant.cokey.lut$source)
+table(dominant.cokey.lut$source, dominant.cokey.lut$majcompflag)
+
+# ensure no duplicate map unit keys
+stopifnot(! any(table(dominant.cokey.lut$mukey) > 1))
+
+# check for missing mukeys 
+setdiff(unique(x$mukey), dominant.cokey.lut$mukey)
+setdiff(dominant.cokey.lut$mukey, unique(x$mukey))
+
+# save
+saveRDS(dominant.cokey.lut, file = 'data/dominant-cokey-LUT.rds')
+
+
+
+
+## weighted mean depth to restrictive features
+z <- lapply(ss, wtMeanProperty, v = 'depth.to.restriction')
+rest.depth.wt.mean <- do.call('rbind', z)
+row.names(rest.depth.wt.mean) <- NULL
+
+# save
+saveRDS(rest.depth.wt.mean, file = 'data/rest-depth-wtmean-LUT.rds')
+
+
+
 ## TODO: wt. mean soil properties to contact
+
+
+
+
+########################### old stuff, pending integration ##############################
+
+
 
 
 

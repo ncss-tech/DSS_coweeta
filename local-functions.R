@@ -17,11 +17,56 @@ fitDecayFunction <- function(z, p0, p) {
 }
 
 
+# wt. mean component level property
+# i: map unit / component records, split by mukey
+wtMeanProperty <- function(i, v) {
+  
+  # filter misc. areas
+  .keep <- which(i$compkind != 'Miscellaneous area' & !is.na(i$comppct_r))
+  i <- i[.keep, ]
+  if(nrow(i) < 1) {
+    return(NULL)
+  }
+  
+  # wt. mean
+  .wm <- weighted.mean(x = i[[v]], w = i$comppct_r, na.rm = TRUE)
+  
+  # assemble results
+  .res <- data.frame(
+    mukey = i$mukey[1],
+    .v = .wm
+  )
+  
+  # fix names
+  names(.res)[2] <- v
+  
+  return(.res)
+}
+
+
+# dominant component within a single map unit
+# i: map unit / component records, split by mukey
+dominantComponent <- function(i) {
+  
+  # filter misc. areas
+  .keep <- which(i$compkind != 'Miscellaneous area' & !is.na(i$comppct_r))
+  i <- i[.keep, ]
+  if(nrow(i) < 1) {
+    return(NULL)
+  }
+  
+  # largest component
+  idx <- order(i$comppct_r, decreasing = TRUE)[1]
+  
+  return(i[idx, ])
+}
+
 
 dominantCondition <- function(i, v) {
   
   # filter misc. areas
-  i <- i[which(i$compkind != 'Miscellaneous area'), ]
+  .keep <- which(i$compkind != 'Miscellaneous area' & !is.na(i$comppct_r))
+  i <- i[.keep, ]
   if(nrow(i) < 1) {
     return(NULL)
   }
@@ -36,18 +81,18 @@ dominantCondition <- function(i, v) {
   # retain most frequent class and associated IDs
   res <- data.frame(
     mukey = i$mukey[1],
-    cokey = i$cokey[1],
-    compname = i$compname[1],
     source = i$source[1],
     v = a[[v]][idx],
     pct = a[['comppct_r']][idx]
   )
   
   # fix names
-  names(res) <- c('mukey', 'cokey', 'compname', 'source', v, 'pct')
+  names(res) <- c('mukey', 'source', v, 'pct')
   
   return(res)
 }
+
+
 
 dominantValue <- function(i, v) {
   
