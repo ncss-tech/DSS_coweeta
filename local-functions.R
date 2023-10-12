@@ -254,7 +254,7 @@ writeSoilParameterFile <- function(p, f = '') {
     .v <- p[[i]]
     .n <- nm[i]
     
-    # encode with single-space delimeter
+    # encode with single-space delimiter
     # [value] [label]
     textLines[i] <- sprintf("%s %s", .v, .n)
   }
