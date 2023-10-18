@@ -33,6 +33,11 @@ s.rat <- cats(s)[[1]]
 r.rat <- merge(r.rat, lut, by = 'mukey', all.x = TRUE, sort = FALSE)
 s.rat <- merge(s.rat, lut, by = 'mukey', all.x = TRUE, sort = FALSE)
 
+## re-arrange RAT columns, 'ID' must be first
+.vars <- c('ID', 'mukey', 'source', 'soil.type', 'soil.type.numeric', 'compname')
+r.rat <- r.rat[, .vars]
+s.rat <- s.rat[, .vars]
+
 ## re-pack updated RATs
 levels(r) <- r.rat
 levels(s) <- s.rat
