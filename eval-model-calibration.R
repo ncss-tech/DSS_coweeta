@@ -2,6 +2,8 @@ library(lattice)
 library(latticeExtra)
 library(tactile)
 
+# latest model runs + metrics c/o Carlos
+
 ssurgo <- read.table('calibration-eval/ssurgocalibrationoutput1023.txt', header = TRUE)
 rss <- read.table('calibration-eval/dsmcalibrationoutput1023.txt', header = TRUE)
 static <- read.table('calibration-eval/staticcalibrationoutput1023.txt', header = TRUE)
@@ -25,6 +27,8 @@ bwplot(which ~ valKGE, data = x, par.settings = tactile.theme(), notch = TRUE, s
 bwplot(which ~ valsmNSE, data = x, par.settings = tactile.theme(), notch = TRUE, scales = list(x = list(tick.number = 10)))
 
 
+# add KGE mean equivalency threshold
+# https://hess.copernicus.org/articles/23/4323/2019/
 
 p1 <- bwplot(which ~ valKGE, 
              data = x, 
