@@ -32,7 +32,7 @@ p1 <- bwplot(which ~ valKGE,
        xlab = 'KGE (validation)',
        par.settings = tactile.theme(), 
        notch = TRUE, 
-       scales = list(x = list(tick.number = 15)), 
+       scales = list(x = list(tick.number = 10)), 
        panel = function(...) {
          panel.grid(-1, -1)
          panel.abline(v = -0.41, lty = 2, col = 2, lwd = 2)
@@ -46,7 +46,7 @@ p2 <- bwplot(which ~ valsmKGE,
        xlab = 'KGE (validation)',
        par.settings = tactile.theme(), 
        notch = TRUE, 
-       scales = list(x = list(tick.number = 15)), 
+       scales = list(x = list(tick.number = 10)), 
        panel = function(...) {
          panel.grid(-1, -1)
          panel.abline(v = -0.41, lty = 2, col = 2, lwd = 2)
@@ -54,8 +54,11 @@ p2 <- bwplot(which ~ valsmKGE,
        }
 )
 
+ragg::agg_png(filename = 'figures/Oct23-model-performance.png', width = 1200, height = 800, scaling = 2)
+
 print(p1, split = c(1, 1, 1, 2), more = TRUE)
 print(p2, split = c(1, 2, 1, 2), more = FALSE)
 
+dev.off()
 
 
