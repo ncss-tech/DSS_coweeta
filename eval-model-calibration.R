@@ -7,9 +7,9 @@ rss <- read.table('calibration-eval/dsmcalibrationoutput1023.txt', header = TRUE
 static <- read.table('calibration-eval/staticcalibrationoutput1023.txt', header = TRUE)
 
 x <- make.groups(
+  `Static Soil Data` = static,
   SSURGO = ssurgo, 
-  `Raster Soil Survey` = rss,
-  `Static Soil Data` = static
+  `Raster Soil Survey` = rss
 )
 
 ## maybe not all that informative as compared with the distributions themselves
@@ -27,31 +27,31 @@ bwplot(which ~ valsmNSE, data = x, par.settings = tactile.theme(), notch = TRUE,
 
 
 p1 <- bwplot(which ~ valKGE, 
-       data = x, 
-       main = 'Streamflow Predictions',
-       xlab = 'KGE (validation)',
-       par.settings = tactile.theme(), 
-       notch = TRUE, 
-       scales = list(x = list(tick.number = 10)), 
-       panel = function(...) {
-         panel.grid(-1, -1)
-         panel.abline(v = -0.41, lty = 2, col = 2, lwd = 2)
-         panel.bwplot(...)
-       }
+             data = x, 
+             main = 'Streamflow Predictions',
+             xlab = 'KGE (validation)',
+             par.settings = tactile.theme(), 
+             notch = TRUE, 
+             scales = list(x = list(tick.number = 10)), 
+             panel = function(...) {
+               panel.grid(-1, -1)
+               panel.abline(v = -0.41, lty = 2, col = 2, lwd = 2)
+               panel.bwplot(...)
+             }
 )
 
 p2 <- bwplot(which ~ valsmKGE, 
-       data = x, 
-       main = 'Soil Moisture Predictions',
-       xlab = 'KGE (validation)',
-       par.settings = tactile.theme(), 
-       notch = TRUE, 
-       scales = list(x = list(tick.number = 10)), 
-       panel = function(...) {
-         panel.grid(-1, -1)
-         panel.abline(v = -0.41, lty = 2, col = 2, lwd = 2)
-         panel.bwplot(...)
-       }
+             data = x, 
+             main = 'Soil Moisture Predictions',
+             xlab = 'KGE (validation)',
+             par.settings = tactile.theme(), 
+             notch = TRUE, 
+             scales = list(x = list(tick.number = 10)), 
+             panel = function(...) {
+               panel.grid(-1, -1)
+               panel.abline(v = -0.41, lty = 2, col = 2, lwd = 2)
+               panel.bwplot(...)
+             }
 )
 
 ragg::agg_png(filename = 'figures/Oct23-model-performance.png', width = 1200, height = 800, scaling = 2)
