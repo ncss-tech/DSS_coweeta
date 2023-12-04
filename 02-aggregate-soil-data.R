@@ -115,6 +115,8 @@ xyplot(top ~ p.q50 | variable, groups = source, data=a.site, ylab='Depth',
 )
 
 
+# ^^ note influence of O horizons, which seem to be present in RSS vs. SSURGO
+
 
 
 ##
@@ -125,7 +127,7 @@ y <- trunc(x, 0, x$depth.to.restriction)
 
 a.site <- slab(y, fm = mukey ~ sandtotal_r + silttotal_r + claytotal_r + dbthirdbar_r + wthirdbar_r + wfifteenbar_r + ksat_r + ksat, weights = 'comppct_r')
 
-a.site$source <- factor(a.site$source)
+a.site$mukey <- factor(a.site$mukey)
 
 levels(a.site$variable) <- c('Sand (%)', 'Silt (%)', 'Clay (%)', 'Db 1/3 bar (g/cm^3)', 'Water Retention 1/3 bar (%)',  'Water Retention 15 bar (%)', 'Ksat (SSURGO)', 'Ksat (ROSETTA)')
 
@@ -133,7 +135,9 @@ levels(a.site$variable) <- c('Sand (%)', 'Silt (%)', 'Clay (%)', 'Db 1/3 bar (g/
 tps <- tactile.theme(superpose.line = list(col = c('RoyalBlue', 'DarkRed', 'DarkGreen'), lwd = 2))
 
 # plot grouped, aggregate data
-xyplot(top ~ p.q50 | variable, groups = mukey, data=a.site, ylab='Depth',
+xyplot(top ~ p.q50 | variable, data = a.site, 
+       subset = mukey == '545842',
+       ylab='Depth',
        xlab='median bounded by 25th and 75th percentiles',
        lower=a.site$p.q25, upper=a.site$p.q75, ylim=c(155,-5),
        panel=panel.depth_function, alpha=0.25, sync.colors=TRUE,
@@ -240,8 +244,11 @@ groupedProfilePlot(x.sub, groups = 'source', color = 'texture', name = '', label
 
 ##
 
-x$pi <- profileInformationIndex(x, vars = c('awc_r'))
+x$pi <- profileInformationIndex(x, vars = c('awc_r'), method = 'joint', baseline = FALSE, compression = 'gzip')
 tapply(x$pi, x$source, median)
+
+bwplot(source ~ pi, data = site(x))
+
 
 x.u <- unique(x, vars = c('hzdept_r', 'hzdepb_r', 'awc_r', 'compname', 'hzname'))
 table(x.u$source)
