@@ -1,6 +1,13 @@
-## Generate derivatives from a warped/resampled DEM. The NAD83 / UTM zone 17N (EPSG:26917) projected coordinate reference system is used.
+## Generate derivatives from a warped/re-sampled DEM. The NAD83 / UTM zone 17N (EPSG:26917) projected coordinate reference system is used.
 ## 2023-10-05
 ## D.E. Beaudette
+
+
+## Updates:
+## * 2024-03-19: starting R Studio from within GRASS no longer works
+## * 
+
+
 
 
 ##
@@ -17,7 +24,7 @@
 # 2. start GRASS GIS, find database / location / mapset
 #
 # adjust paths as needed
-# "c:\Program Files\QGIS 3.22.5\bin\grass78.bat" e:\GRASS\gcs_wgs84\PERMANENT
+# "c:\Program Files\QGIS 3.32.3\bin\grass83.bat" e:\GRASS\gcs_wgs84\PERMANENT
 
 # 3. start RStudio from GRASS console
 # "c:\Program Files\RStudio\bin\rstudio.exe"
@@ -43,7 +50,7 @@ execGRASS('v.in.ogr', flags = c('overwrite'), parameters = list(input = 'vect', 
 
 ## exit, and restart into this new location/mapset
 
-# "c:\Program Files\QGIS 3.22.5\bin\grass78.bat" e:\GRASS\coweeta\PERMANENT
+# "c:\Program Files\QGIS 3.32.3\bin\grass83.bat" e:\GRASS\coweeta\PERMANENT
 
 # "c:\Program Files\RStudio\bin\rstudio.exe"
 
@@ -56,9 +63,6 @@ library(sf)
 library(terra)
 
 library(rasterVis)
-library(viridisLite)
-library(RColorBrewer)
-
 
 
 # check: boundary should be in there
@@ -129,6 +133,9 @@ execGRASS(
   )
 )
 
+## might be simpler to write / source commands directly
+# r.flow -u --overwrite elevation=elev flowaccumulation=flowacc flowline=upslope_flowline
+# v.out.ogr -c --overwrite input=upslope_flowline type=line output=vect/upslope_flowlines.shp format=ESRI_Shapefile
 
 # list output
 execGRASS('g.list', parameters = list(type = 'vect'))
