@@ -2,7 +2,6 @@ library(soilDB)
 library(sharpshootR)
 library(hydromad)
 library(terra)
-library(viridisLite)
 
 
 ## see / adapt leaky-bucket-via-ISSR800-AWC-CONUS.R
@@ -14,7 +13,7 @@ pet <- rast('e:/gis_data/prism/final_monthly_pet_800m.tif')
 
 # UTM
 elev <- rast('grids/elev_pcs.tif')
-aws <- rast('grids/rss_aws050.tif')
+aws <- rast('grids/archive/rss_aws050.tif')
 
 # watershed
 w <- vect('vect/Coweeta_Hydrologic_Laboratory.shp')
@@ -82,14 +81,14 @@ runWB <- function(rs) {
   }
 }
 
-# ~ 4 minutes
+# ~ 3.6 minutes
 system.time(wb <- app(x, fun = runWB, cores = 8))
 
 # check: reasonable
 
-plot(wb, col = mako(25), axes = FALSE, mar = c(1, 1, 2, 5))
+plot(wb, col = hcl.colors(25, palette = 'mako'), axes = FALSE, mar = c(1, 1, 2, 5))
 
-plot(wb[[4]], col = mako(25), axes = FALSE, mar = c(1, 1, 2, 5))
+plot(wb[[4]], col = hcl.colors(25, palette = 'mako'), axes = FALSE, mar = c(1, 1, 2, 5))
 
 
 summary(aws)
@@ -99,15 +98,28 @@ summary(aws)
 s <- spatSample(x, size = 1, na.rm = TRUE, as.df = TRUE)
 
 
-mwb <- monthlyWB(
+mwb1 <- monthlyWB(
   AWC = unlist(s[, 26]),
   PPT = unlist(s[, 1:12]), 
   PET = unlist(s[, 13:24]), 
   rep = 3, 
-  keep_last = TRUE
+  keep_last = TRUE,
+  distribute = FALSE
 )
 
-plotWB(mwb)
+mwb2 <- monthlyWB(
+  AWC = unlist(s[, 26]),
+  PPT = unlist(s[, 1:12]), 
+  PET = unlist(s[, 13:24]), 
+  rep = 3, 
+  keep_last = TRUE,
+  distribute = TRUE
+)
+
+
+par(mfrow = c(2, 1))
+plotWB(mwb1)
+plotWB(mwb2)
 
 
 
