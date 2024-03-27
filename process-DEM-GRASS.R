@@ -3,9 +3,13 @@
 ## D.E. Beaudette
 
 
+## TODO:
+## * get notes from basho, related to curvature and other terrain derivatives
+
+
 ## Updates:
 ## * 2024-03-19: starting R Studio from within GRASS no longer works
-## * 
+## * 2024-03-21: re-write as native GRASS commands, run there, it is simpler / faster
 
 
 
