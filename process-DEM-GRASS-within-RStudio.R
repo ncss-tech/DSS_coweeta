@@ -3,11 +3,12 @@
 
 
 
-## hangs with white screen
-# "c:\Program Files\RStudio\bin\rstudio.exe"
 
-## works as expected
-# "c:\Program Files\r\R-4.3.1\bin\R.exe"
+
+## open from stand-alone OSGeo4W shell
+
+
+# "c:\Program Files\RStudio\rstudio.exe"
 
 
 ## only feasible solution on Windows:
@@ -27,14 +28,15 @@ setwd('e:/working_copies/DSS_coweeta/')
 library(terra)
 library(rgrass)
 
-# check: boundary should be in there
-execGRASS('g.list', parameters = list(type = 'vect'))
-
-
-## the GRASS from within R isn't going to work
+# works!
 
 (e <- rast('grids/elev_pcs.tif'))
 
 .gb <- 'c:/OSGeo4W/apps/grass/grass83'
 loc <- initGRASS(gisBase = .gb, home = tempdir(), SG  = e, override = TRUE)
+
+execGRASS('g.region', flags = 'p')
+
+
+
 
