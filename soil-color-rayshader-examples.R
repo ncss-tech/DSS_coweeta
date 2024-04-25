@@ -1,15 +1,19 @@
 library(terra)
 library(rayshader)
-library(viridisLite)
+
+## TODO: use WCS: https://ncss-tech.github.io/AQP/soilDB/WCS-demonstration-01.html#Soil_Color
 
 # temp location until WCS is in place
 # CONUS soil color grid
 # EPSG 5070
-x <- rast('e:/gis_data/soil-color/2022/final-025cm-gNATSGO-highres.tif')
+x <- rast('e:/working_copies/soil-color/conus-soil-colors/results/025cm-gNATSGO-highres.tif')
 
 # code / color LUT
-soilcolor.lut <- read.csv('e:/gis_data/soil-color/2022/unique-moist-color-LUT.csv')
+soilcolor.lut <- read.csv('e:/working_copies/soil-color/conus-soil-colors/results/unique-moist-color-LUT.csv')
 soilcolor.lut$col <- rgb(soilcolor.lut$r, soilcolor.lut$g, soilcolor.lut$b, maxColorValue = 255)
+
+# set color table for grid
+coltab(x) <- soilcolor.lut[, c('id', 'r', 'g', 'b')]
 
 # local DEM to crop
 # UTM
@@ -38,29 +42,22 @@ lines(b)
 # transform back to UTM and resample to same extent / res as DEM (10m)
 soilcolor <- project(x, e, method = 'near')
 
-# link soil color LUT -> rast attribute table (RAT)
-
-# convert to grid + RAT
-soilcolor <- as.factor(soilcolor)
-rat <- cats(soilcolor)[[1]]
-
-# merge color LUT + RAT, and re-pack
-rat <- merge(rat, soilcolor.lut, by.x = 'ID', by.y = 'id')
-levels(soilcolor) <- rat
+# check that color table has survived
+has.colors(soilcolor)
 
 # check: OK
-plot(soilcolor, col = rat$col, legend = FALSE, axes = FALSE, mar = c(1, 1, 1, 1))
+plot(soilcolor, legend = FALSE, axes = FALSE, mar = c(1, 1, 1, 1))
 lines(w, col = 'white')
 
 
 # save as overlay image
-png(file = 'overlay-soilcolor.png', width = ncol(soilcolor), height = nrow(soilcolor))
-plot(soilcolor, col = rat$col, legend = FALSE, axes = FALSE, maxcell = ncell(soilcolor), mar = c(0, 0, 0, 0))
+ragg::agg_png(filename = 'overlay-soilcolor.png', width = ncol(soilcolor), height = nrow(soilcolor))
+plot(soilcolor, legend = FALSE, axes = FALSE, maxcell = ncell(soilcolor), mar = c(0, 0, 0, 0))
 lines(w, col = 'white')
 dev.off()
 
-png(file = 'overlay-SWI.png', width = ncol(o), height = nrow(o))
-plot(o, col = mako(25), legend = FALSE, axes = FALSE, maxcell = ncell(o), mar = c(0, 0, 0, 0))
+ragg::agg_png(filename = 'overlay-SWI.png', width = ncol(o), height = nrow(o))
+plot(o, col = hcl.colors(25, palette = 'mako'), legend = FALSE, axes = FALSE, maxcell = ncell(o), mar = c(0, 0, 0, 0))
 lines(w, col = 'white')
 dev.off()
 
@@ -126,6 +123,6 @@ render_snapshot(
 
 
 ## do this after a session, to clear rgl device
-rgl::rgl.close()
+rgl::close3d()
 
 
