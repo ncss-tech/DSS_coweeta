@@ -3,6 +3,7 @@ library(aqp)
 library(sharpshootR)
 library(terra)
 library(sf)
+library(ragg)
 
 
 # RSS: cell values are map unit keys
@@ -37,7 +38,10 @@ site(osds) <- co.area[, c('id', 'comp.ac', 'proportion')]
 
 s <- site(osds)
 
-SoilTaxonomyDendrogram(osds, width = 0.35, name.style = 'center-center', y.offset = 0.4, hz.distinctness.offset = 'hzd', shrink = TRUE)
+agg_png(file = 'RSS-OSDs-ST-dend.png', width = 1800, height = 900, scaling = 1.5)
+SoilTaxonomyDendrogram(osds, cex.taxon.labels = 1, KST.order = FALSE, width = 0.35, name.style = 'center-center', y.offset = 0.4, hz.distinctness.offset = 'hzd', shrink = TRUE, depth.axis = list(line = -4))
+dev.off()
+
 
 
 o.sub <- osds
@@ -73,15 +77,15 @@ b <- data.frame(id = profile_id(o.sub), top = o.sub$mineral.top, bottom = o.sub$
 
 ragg::agg_png(filename = 'RSS-OSDs-no-lines.png', width = 2200, height = 900, scaling = 1.75)
 
-par(mar = c(1.5, 0, 0, 0), lend = 1)
+par(mar = c(3.5, 0, 0, 0), lend = 1)
 
-plotSPC(o.sub, width = 0.33, name.style = 'center-center', hz.distinctness.offset = 'hzd', shrink = TRUE, id.style = 'top', cex.names = 0.75, plot.order = idx, cex.id = 0.66, max.depth = 170, axis.line.offset = -6, cex.depth.axis = 1, n.depth.ticks = 10, plot.depth.axis = TRUE)
+plotSPC(o.sub, width = 0.33, name.style = 'center-center', hz.distinctness.offset = 'hzd', shrink = TRUE, id.style = 'top', cex.names = 0.75, plot.order = idx, cex.id = 0.66, max.depth = 180, depth.axis = list(line = -6, cex = 1, interval = 20))
 
 addBracket(b, offset = -0.45, tick.length = 0, lwd = 6, col = 'royalblue')
 
-axis(side = 1, at = 1:length(o.sub), labels = round(o.sub$proportion[idx], 2), line = -2, cex.axis = 1)
+axis(side = 1, at = 1:length(o.sub), labels = round(o.sub$proportion[idx], 2), line = 0, cex.axis = 1)
 
-mtext('Approximate Area Proportion within Coweeta', side = 1, line = 0, at = 0.5, adj = 0, font = 2)
+mtext('Approximate Area Proportion within Coweeta', side = 1, line = 2.3, at = 0.5, adj = 0, font = 2)
 
 dev.off()
 
@@ -101,12 +105,12 @@ s.idx <- order(s$comp.ac, decreasing = TRUE)
 
 ragg::agg_png(filename = 'RSS-components-awc_r.png', width = 2200, height = 900, scaling = 1.75)
 
-par(mar = c(1.5, 0, 3, 0))
+par(mar = c(4, 0, 3, 0))
 
-plotSPC(s, label = 'compname', color = 'awc_r', col.label = 'Plant Available Water Holding Capacity (cm/cm)', width = 0.33, name.style = 'center-center', shrink = TRUE, id.style = 'top', cex.names = 0.75, plot.order = s.idx, cex.id = 0.66, max.depth = 170, axis.line.offset = -6, cex.depth.axis = 1, n.depth.ticks = 10, plot.depth.axis = TRUE)
+plotSPC(s, label = 'compname', color = 'awc_r', col.label = 'Plant Available Water Holding Capacity (cm/cm)', width = 0.33, name.style = 'center-center', shrink = TRUE, id.style = 'top', cex.names = 0.75, plot.order = s.idx, cex.id = 0.66, max.depth = 180, depth.axis = list(line = -6, cex = 1, interval = 20))
 
-axis(side = 1, at = 1:length(s), labels = round(s$proportion[s.idx], 2), line = -2, cex.axis = 1)
+axis(side = 1, at = 1:length(s), labels = round(s$proportion[s.idx], 2), line = 0, cex.axis = 1)
 
-mtext('Approximate Area Proportion within Coweeta', side = 1, line = 0, at = 0.5, adj = 0, font = 2)
+mtext('Approximate Area Proportion within Coweeta', side = 1, line = 2.5, at = 0.5, adj = 0, font = 2)
 
 dev.off()
