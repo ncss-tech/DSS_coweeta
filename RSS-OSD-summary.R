@@ -114,3 +114,9 @@ axis(side = 1, at = 1:length(s), labels = round(s$proportion[s.idx], 2), line = 
 mtext('Approximate Area Proportion within Coweeta', side = 1, line = 2.5, at = 0.5, adj = 0, font = 2)
 
 dev.off()
+
+
+## TODO: use component pedons
+# cop <- readRDS('e:/working-from-home-to-file/SoilWeb/copedon-sync/copedon-data.rds')
+
+
