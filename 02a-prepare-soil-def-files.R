@@ -119,7 +119,9 @@ z <- merge(z, site(x)[, c('mukey', 'cokey', 'comppct_r', 'soil.depth')], by = 'c
 z.sub <- z[which(z$cokey %in% dominant.cokey.lut$cokey), ]
 
 
-## fill missing values with plausible estimates
+## fill missing / obviously wrong values with plausible estimates
+##  * regional mean ?
+##  * defaults ? 
 
 # particle density, use density of quartz
 z.sub$partdensity <- 2.6
@@ -155,6 +157,10 @@ knitr::kable(
 )
 
 
-## save
+## save tabular output
+saveRDS(z.sub, file = 'data/soil-definitions-by-mukey.rds')
+
+
+## craft soil def files
 
 
