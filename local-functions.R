@@ -2,19 +2,19 @@
 ##
 ##
 
-## TODO: 
-#  * constant values?
-#  * not enough values to fit a curve? dice() -> nls() | optim() -> coef()
-#  * are exponential fits reasonable?
-
-fitDecayFunction <- function(z, p0, p) {
-  
-  # solve for p
-  # res <- p0 * exp(-(z/p))
-  
-  return(res)
-  
-}
+# ## TODO: 
+# #  * constant values?
+# #  * not enough values to fit a curve? dice() -> nls() | optim() -> coef()
+# #  * are exponential fits reasonable?
+# 
+# fitDecayFunction <- function(z, p0, p) {
+#   
+#   # solve for p
+#   # res <- p0 * exp(-(z/p))
+#   
+#   return(res)
+#   
+# }
 
 
 # wt. mean component level property
@@ -240,6 +240,49 @@ soilParameterFileToList <- function(f) {
 
 
 
+# https://github.com/RHESSys/RHESSys/wiki/Parameter-Definition-Files#soil-definition-file-parameters
+
+toParameterNames <- function(i) {
+  
+  list(
+    # ID is the map unit key
+    patch_default_ID = i$mukey,
+    
+    # wt. mean over soil horizons, derived from SSURGO
+    sand = i$sandtotal_r,
+    silt = i$silttotal_r,
+    clay = i$claytotal_r,
+    
+    # soil depth, to contact if present, otherwise bottom depth of component
+    soil_depth = i$soil.depth,
+    
+    # via lm(log(x) ~ hz mid point)
+    # model often unsuitable, or does not converge (n too small, constant values)
+    # Ksat_0 = i$ksat_0,
+    # porosity_0 = i$por_0,
+    
+    # estimated by wt. geometric mean over component to contact
+    KSat_0 = i$ksat_r,
+    
+    # estimated by wt. mean over component to contact
+    porosity_0 = i$wsatiated_r,
+    
+    # constants
+    m = 0.12,
+    psi_max = 0.01
+    
+    ## TODO: what are these supposed to mean / how can we estimate?
+    # interpretations of SSURGO data
+    # psi_air_entry = 'XX',
+    # pore_size_index = 'XX'
+    
+    # all other parameters are defaults
+  )
+  
+}
+
+
+
 
 writeSoilParameterFile <- function(p, f = '') {
  
@@ -260,8 +303,16 @@ writeSoilParameterFile <- function(p, f = '') {
   }
   
   # write to file
-  cat(textLines, sep = '\n', file = )
+  cat(textLines, sep = '\n', file = f)
 }
+
+
+
+
+
+
+
+
 
 
 

@@ -13,6 +13,8 @@ dominant.cokey.lut <- readRDS('data/dominant-cokey-LUT.rds')
 ## combined mu/component data, as SPC
 x <- readRDS('data/combined-tab-data-SPC.rds')
 
+## consider using ROSETTA for estimation of hydraulic properties / VG parameters
+
 
 ## unit conversions
 
@@ -49,7 +51,7 @@ x$mid <- (x$hzdept_r + x$hzdepb_r) / 2
 ## 0-200cm depth interval considered
 a <- slab(
   x, 
-  fm = cokey ~ sandtotal_r + silttotal_r + claytotal_r + kffact + dbovendry_r + partdensity + awc_r + wthirdbar_r + wsatiated_r + om_r + ksat_r, 
+  fm = cokey ~ sandtotal_r + silttotal_r + claytotal_r + kffact + dbovendry_r + partdensity + awc_r + wthirdbar_r + wsatiated_r + om_r + ksat_r + log_ksat, 
   slab.fun = mean, 
   na.rm = TRUE,
   slab.structure = c(0, 200)
@@ -57,6 +59,9 @@ a <- slab(
 
 # long -> wide
 hz.wt.mean <- dcast(a, cokey ~ variable, value.var = 'value')
+
+
+## these aren't likely reliable, probably better to try this over a much larger group of related data
 
 ## iteration over components
 decayFunctions <- function(i) {
@@ -113,32 +118,40 @@ z <- merge(hz.wt.mean, df, by = 'cokey', all.x = TRUE, sort = FALSE)
 z <- merge(z, site(x)[, c('mukey', 'cokey', 'comppct_r', 'soil.depth')], by = 'cokey', all.x = TRUE, sort = FALSE)
 
 
+## 2024-07-30: use constant decay coef.
+z$por_decay <- 4000
+z$ksat_decay <- 0.12
+
+
+## back-transform wt mean log(ksat)
+# plot(exp(log_ksat) ~ ksat_r, data = z, las = 1)
+# abline(0, 1)
+
+# using wt. geometric mean of Ksat due to highly skewed distribution 
+z$ksat_r <- exp(z$log_ksat)
+
+
+## Ksat_0 missing values
+# use regional mean
+z$ksat_0[which(is.na(z$ksat_0))] <- mean(z$ksat_0, na.rm = TRUE)
+
+## porosity_0 missing values
+# use regional mean
+z$por_0[which(is.na(z$por_0))] <- mean(z$por_0, na.rm = TRUE)
+
+
+## particle density, use density of quartz
+z$partdensity <- 2.6
+
+## interpret soil texture class of fine earth fraction (<2mm)
+# this is is a rough approximation of *entire soil profiles* ...
+z$texture <- ssc_to_texcl(sand = z$sandtotal_r * 100, clay = z$claytotal_r * 100)
+
+
 ## aggregate or subset for 1 row / mukey
 
 ## largest component
 z.sub <- z[which(z$cokey %in% dominant.cokey.lut$cokey), ]
-
-
-## fill missing / obviously wrong values with plausible estimates
-##  * regional mean ?
-##  * defaults ? 
-
-# particle density, use density of quartz
-z.sub$partdensity <- 2.6
-
-# ksat decay function
-# use regional mean
-z.sub$ksat_0[is.na(z.sub$ksat_0)] <- mean(z.sub$ksat_0, na.rm = TRUE)
-z.sub$ksat_decay[is.na(z.sub$ksat_decay)] <- mean(z.sub$ksat_decay, na.rm = TRUE)
-
-# porosity decay function
-z.sub$por_0[is.na(z.sub$por_0)] <- mean(z.sub$por_0, na.rm = TRUE)
-z.sub$por_decay[is.na(z.sub$por_decay)] <- mean(z.sub$por_decay, na.rm = TRUE)
-
-
-## interpret soil texture class of fine earth fraction (<2mm)
-# this is is a rough approximation of *entire soil profiles* ...
-z.sub$texture <- ssc_to_texcl(sand = z.sub$sandtotal_r * 100, clay = z.sub$claytotal_r * 100)
 
 
 ## final checks
@@ -158,9 +171,24 @@ knitr::kable(
 
 
 ## save tabular output
+saveRDS(z, file = 'data/soil-definitions-by-cokey.rds')
 saveRDS(z.sub, file = 'data/soil-definitions-by-mukey.rds')
 
 
 ## craft soil def files
+
+# iterate over rows, converting to named list
+pn <- lapply(
+  split(z.sub, 1:nrow(z.sub)), 
+  toParameterNames
+)
+
+# write each named list to soil parameter file, by mukey
+.trash <- lapply(pn, function(i) {
+  .f <- sprintf('soil-parameter-files/by-mukey/soil_%s.def', i$patch_default_ID)
+  writeSoilParameterFile(i, f = .f)
+})
+
+
 
 
