@@ -6,6 +6,8 @@
 # #  * constant values?
 # #  * not enough values to fit a curve? dice() -> nls() | optim() -> coef()
 # #  * are exponential fits reasonable?
+# #  * lm(log(y) ~ x)
+# #  * ... group over larger collections of profiles
 # 
 # fitDecayFunction <- function(z, p0, p) {
 #   
@@ -62,6 +64,7 @@ dominantComponent <- function(i) {
 }
 
 
+# dominant condition by map unit key
 dominantCondition <- function(i, v) {
   
   # filter misc. areas
@@ -93,7 +96,7 @@ dominantCondition <- function(i, v) {
 }
 
 
-
+# dominant value by map unit key, with associated component percent
 dominantValue <- function(i, v) {
   
   i <- i[which(i$compkind != 'Miscellaneous area'), ]
@@ -119,6 +122,7 @@ dominantValue <- function(i, v) {
 
 
 
+## not currently using this 
 
 #' @title Build a soil parameter list from SSURGO/RSS component data.
 #'
@@ -220,7 +224,7 @@ buildParameterList <- function(s, template = NULL) {
 
 
 
-
+# convert a soil parameter file to named list of values
 soilParameterFileToList <- function(f) {
   
   # load as 2 column data.frame
@@ -240,6 +244,9 @@ soilParameterFileToList <- function(f) {
 
 
 
+
+# map soil parameters to SSURGO-derivatives
+#
 # https://github.com/RHESSys/RHESSys/wiki/Parameter-Definition-Files#soil-definition-file-parameters
 
 toParameterNames <- function(i) {
@@ -282,9 +289,9 @@ toParameterNames <- function(i) {
 }
 
 
+# write named list to soil definition file
 
-
-writeSoilParameterFile <- function(p, f = '') {
+writeSoilDefinitionFile <- function(p, f = '') {
  
   # names for iteration
   nm <- names(p)

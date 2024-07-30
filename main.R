@@ -30,6 +30,8 @@ source('02a-prepare-soil-def-files.R')
 # source('03-prepare-soil-maps.R')
 
 
+## TODO: adapt to use soil definition summaries
+
 ## various thematic maps from aggregate data
 source('04-prepare-thematic-maps.R')
 

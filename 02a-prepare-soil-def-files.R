@@ -186,7 +186,7 @@ pn <- lapply(
 # write each named list to soil parameter file, by mukey
 .trash <- lapply(pn, function(i) {
   .f <- sprintf('soil-parameter-files/by-mukey/soil_%s.def', i$patch_default_ID)
-  writeSoilParameterFile(i, f = .f)
+  writeSoilDefinitionFile(i, f = .f)
 })
 
 
