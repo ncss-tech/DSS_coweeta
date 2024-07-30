@@ -262,7 +262,7 @@ toParameterNames <- function(i) {
     # porosity_0 = i$por_0,
     
     # estimated by wt. geometric mean over component to contact
-    KSat_0 = i$ksat_r,
+    Ksat_0 = i$ksat_r,
     
     # estimated by wt. mean over component to contact
     porosity_0 = i$wsatiated_r,
