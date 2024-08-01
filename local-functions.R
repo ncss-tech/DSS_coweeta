@@ -276,14 +276,42 @@ toParameterNames <- function(i) {
     
     # constants
     m = 0.12,
-    psi_max = 0.01
+    psi_max = 0.01,
     
     ## TODO: what are these supposed to mean / how can we estimate?
-    # interpretations of SSURGO data
-    # psi_air_entry = 'XX',
-    # pore_size_index = 'XX'
+    psi_air_entry = 0.218000,
+    pore_size_index = 0.204000,
     
     # all other parameters are defaults
+    N_decay = 0.120000,
+    P3 = 0.000000,
+    active_zone_z = 10.0000,
+    albedo = 0.280000,
+    deltaZ = 1.0000000,
+    detention_store_size = 0.000000,
+    m_z = 0.400000,
+    max_heat_capacity = 0.000000,
+    min_heat_capacity = 0.000000,
+    maximum_snow_energy_deficit = -10.000000,
+    snow_light_ext_coef = 10000.000000,
+    snow_melt_Tcoef = 0.050000,
+    snow_water_capacity = 0.000000,
+    theta_psi_curve = 1,
+    sat_to_gw_coeff = 1.000000,
+    NO3_adsorption_rate = 0.000000,
+    theta_mean_std_p1 = 0.000000,
+    theta_mean_std_p2 = 0.000000,
+    gl_c = 0.006200,
+    gsurf_slope = 0.010000,
+    gsurf_intercept = 0.001000,
+    p4 = -1.500000,
+    DOM_decay_rate = 0.050000,
+    NH4_adsorption_rate = 0.000005,
+    DON_production_rate = 0.030000,
+    DOC_adsorption_rate = 0.000023,
+    DON_adsorption_rate = 0.000001,
+    interval_size = 0.001000
+    
   )
   
 }
