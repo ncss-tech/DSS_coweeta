@@ -8,8 +8,8 @@ library(aqp)
 ## Input Data:
 # * Coweeta watershed outlines (UTM z17)
 # * FY23 RSS grid (NC, EPSG:5070)
-# * FY23 SSURGO polygons (SDA, WGS84)
-# * FY23 SSURGO tabular data (SDA)
+# * FY24 SSURGO polygons (SDA, WGS84)
+# * FY24 SSURGO tabular data (SDA)
 
 ## Output Data (UTM z17):
 # * RSS 10m grid
@@ -27,7 +27,7 @@ library(aqp)
 
 
 ## 2023-10-05: FY24 gSSURGO, RSS, and gNATSGO not yet available
-stop('Do not replace existing (FY23) data until FY24 data are available!')
+# stop('Do not replace existing (FY23) data until FY24 data are available!')
 
 
 ## start with Coweeta Laboratory Watersheds (outline)
@@ -44,7 +44,7 @@ b <- buffer(o, width = 200)
 rss <- mukey.wcs(b, db = 'rss', res = 10)
 
 # warp to UTM z17
-rss <- project(rss, crs(o), method = 'near')
+rss <- project(rss, crs(o), method = 'near', res = 10)
 
 # crop to watershed boundaries + 200m
 rss <- crop(rss, b)

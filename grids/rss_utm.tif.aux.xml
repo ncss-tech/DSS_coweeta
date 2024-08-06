@@ -9,7 +9,7 @@
       </FieldDefn>
       <FieldDefn index="1">
         <Name>mukey</Name>
-        <Type>1</Type>
+        <Type>2</Type>
         <Usage>0</Usage>
       </FieldDefn>
       <Row index="0">
